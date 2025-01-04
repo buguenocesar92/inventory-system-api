@@ -1,0 +1,49 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "tenant",
+    "collectionId": "9643dca3-32e7-41aa-b8b4-0b4a05721c41",
+    "dateExported": "2025-01-04T17:36:46.942Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "892c093e-238b-4ae0-b75c-5bdb210c7784",
+            "colId": "9643dca3-32e7-41aa-b8b4-0b4a05721c41",
+            "containerId": "",
+            "name": "http://127.0.0.1:8000/api/tenants/register",
+            "url": "http://127.0.0.1:8000/api/tenants/register",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2025-01-04T17:36:32.585Z",
+            "modified": "2025-01-04T17:36:32.585Z",
+            "headers": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "tenant_id",
+                        "value": "test1"
+                    },
+                    {
+                        "name": "domain",
+                        "value": "test1.localhost"
+                    },
+                    {
+                        "name": "user_name",
+                        "value": "test1"
+                    },
+                    {
+                        "name": "user_email",
+                        "value": "test1@gmail.com"
+                    },
+                    {
+                        "name": "user_password",
+                        "value": "12345678"
+                    }
+                ]
+            }
+        }
+    ],
+    "ref": "l_vjkCYQED6-WjDAnesR6T46th9uV_tiJzPSpfiemY7X8Gk7P5Wa7mZvRrFja66TGWzjX-Zv9SVV9s01Hev9VA"
+}
