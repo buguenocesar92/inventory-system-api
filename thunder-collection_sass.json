@@ -1,0 +1,28 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "sass",
+    "collectionId": "0af06f85-76c6-445b-9a29-d9a50a598bcf",
+    "dateExported": "2025-01-04T15:46:03.015Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "070676af-a01f-41ee-8827-5c1dd8ef542b",
+            "colId": "0af06f85-76c6-445b-9a29-d9a50a598bcf",
+            "containerId": "",
+            "name": "http://localhost:8000/api/test",
+            "url": "http://localhost:8000/api/users",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2025-01-04T15:45:55.668Z",
+            "modified": "2025-01-04T15:45:55.668Z",
+            "headers": [
+                {
+                    "name": "Host",
+                    "value": "foo.localhost"
+                }
+            ]
+        }
+    ],
+    "ref": "m8ZwfmRCTdjqmOBcSLCgEJrfDF7aaEgEn7oHuxrqFuwjdSCE56H_b79ozy2ImHylvGycEXKivww7eT1fZ4Z49g"
+}
