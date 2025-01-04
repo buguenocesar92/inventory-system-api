@@ -67,7 +67,7 @@ class TenantController extends Controller
             'tenant_id' => $tenant->id,
             'domain' => $request->domain,
             'user' => $userData['user'], // Ahora es un array
-            'token' => $userData['token'],
+            'access_token' => $userData['token'],
         ], 201);
     }
 }
