@@ -1,7 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
+/* Route::get('/', function () {
     return view('welcome');
 });
 
@@ -14,4 +14,4 @@ Route::middleware([\Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class])
     Route::get('/dashboard', function () {
         return 'Dashboard del tenant: ' . tenant('id');
     });
-});
+}); */

@@ -16,7 +16,7 @@ use App\Models\User; // Asegúrate de importar el modelo User
 
 
     // Rutas para los tenants
-    Route::middleware([\Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class])->group(function () {
+    Route::middleware(['auth:api', \Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class])->group(function () {
         Route::group([
             'prefix' => 'auth',
         ], function () {

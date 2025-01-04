@@ -8,6 +8,7 @@ use App\Models\Tenant;
 use Spatie\Permission\Models\Role; // Importar el modelo de roles
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class TenantController extends Controller
 {
@@ -32,7 +33,7 @@ class TenantController extends Controller
         $tenant->domains()->create(['domain' => $request->domain]);
 
         // Crear la base de datos, ejecutar las migraciones y asignar rol al usuario
-        $tenant->run(function () use ($request) {
+        $userData = $tenant->run(function () use ($request) {
             // Crear el rol admin si no existe
             if (!Role::where('name', 'admin')->exists()) {
                 Role::create(['name' => 'admin']);
@@ -47,12 +48,26 @@ class TenantController extends Controller
 
             // Asignar el rol admin al usuario
             $user->assignRole('admin');
+
+            if (! $token = JWTAuth::fromUser($user)) {
+                return response()->json(['error' => 'Could not generate token'], 500);
+            }
+
+            return [
+                'user' => $user->toArray(),
+                'token' => $token,
+            ];
         });
+
+
+     /*    dd($userData); */
 
         return response()->json([
             'message' => 'Tenant and user created successfully with admin role',
             'tenant_id' => $tenant->id,
             'domain' => $request->domain,
+            'user' => $userData['user'], // Ahora es un array
+            'token' => $userData['token'],
         ], 201);
     }
 }
