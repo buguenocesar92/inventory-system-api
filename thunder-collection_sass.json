@@ -2,7 +2,7 @@
     "clientName": "Thunder Client",
     "collectionName": "sass",
     "collectionId": "0af06f85-76c6-445b-9a29-d9a50a598bcf",
-    "dateExported": "2025-01-04T15:46:03.015Z",
+    "dateExported": "2025-01-04T16:56:13.540Z",
     "version": "1.2",
     "folders": [],
     "requests": [
@@ -22,7 +22,29 @@
                     "value": "foo.localhost"
                 }
             ]
+        },
+        {
+            "_id": "69459919-dff3-43ee-8865-c0957885a2ef",
+            "colId": "0af06f85-76c6-445b-9a29-d9a50a598bcf",
+            "containerId": "",
+            "name": "http://127.0.0.1:8000/api/dashboard",
+            "url": "http://127.0.0.1:8000/api/dashboard",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2025-01-04T16:56:06.329Z",
+            "modified": "2025-01-04T16:56:06.329Z",
+            "headers": [
+                {
+                    "name": "Host",
+                    "value": "test.saas.local",
+                    "isDisabled": true
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MzU2Njk4NTcsImV4cCI6MTczNTY3MzQ1NywibmJmIjoxNzM1NjY5ODU3LCJqdGkiOiJpS0cyb0NHRG5vbE93aGNkIiwic3ViIjoiMyIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.X2bwwzuchRakKFRZHTGwCgTOEMe2tPrfHy6eCf-NcOs"
+            }
         }
     ],
-    "ref": "m8ZwfmRCTdjqmOBcSLCgEJrfDF7aaEgEn7oHuxrqFuwjdSCE56H_b79ozy2ImHylvGycEXKivww7eT1fZ4Z49g"
+    "ref": "m8ZwfmRCTdjqmOBcSLCgENt6Z6QcOSyihDx-Y2GuBKcREe5iHTe61ngZUjU06uwpok7vkFfGJRWI7ZC0rwWzMw"
 }
