@@ -2,9 +2,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TenantController;
-use App\Models\User; // Asegúrate de importar el modelo User
+use App\Models\User;
 
-    // Rutas públicas para registro de inquilinos
     Route::group([
         'prefix' => 'tenants',
     ], function () {
@@ -15,7 +14,6 @@ use App\Models\User; // Asegúrate de importar el modelo User
     });
 
 
-    // Rutas para los tenants
     Route::middleware([\Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class])->group(function () {
         Route::group([
             'prefix' => 'auth',
@@ -35,8 +33,7 @@ use App\Models\User; // Asegúrate de importar el modelo User
             return 'Dashboard del tenant: ' . tenant('id');
         })->middleware('auth:api');
 
-        // Nueva ruta para obtener todos los usuarios
         Route::get('/users', function () {
-            return User::all(); // Retorna todos los usuarios del tenant actual
+            return User::all();
         })->middleware('auth:api');
     });
