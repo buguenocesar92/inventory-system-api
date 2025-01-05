@@ -16,7 +16,6 @@ class TenantController extends Controller
     {
         $validator = Validator::make(request()->all(), [
             'tenant_id' => 'required|string|unique:tenants,id',
-            'domain' => 'required|string|unique:domains,domain',
             'user_name' => 'required|string|max:255',
             'user_email' => 'required|email|unique:users,email',
             'user_password' => 'required|string|min:8',
@@ -26,11 +25,15 @@ class TenantController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
+        // Tomar APP_URL del .env y quitar el prefijo http:// o https://
+        $baseUrl = parse_url(config('app.url'), PHP_URL_HOST); // Devuelve "api.localhost"
+        $tenantUrl = "{$request->tenant_id}.{$baseUrl}";
+
         // Crear el tenant
         $tenant = Tenant::create(['id' => $request->tenant_id]);
 
         // Crear el dominio para el tenant
-        $tenant->domains()->create(['domain' => $request->domain]);
+        $tenant->domains()->create(['domain' => $tenantUrl]);
 
         // Crear la base de datos, ejecutar las migraciones y asignar rol al usuario
         $userData = $tenant->run(function () use ($request) {
@@ -49,7 +52,7 @@ class TenantController extends Controller
             // Asignar el rol admin al usuario
             $user->assignRole('admin');
 
-            if (! $token = JWTAuth::fromUser($user)) {
+            if (!$token = JWTAuth::fromUser($user)) {
                 return response()->json(['error' => 'Could not generate token'], 500);
             }
 
@@ -59,15 +62,13 @@ class TenantController extends Controller
             ];
         });
 
-
-     /*    dd($userData); */
-
         return response()->json([
             'message' => 'Tenant and user created successfully with admin role',
             'tenant_id' => $tenant->id,
-            'domain' => $request->domain,
+            'domain' => $tenantUrl,
             'user' => $userData['user'], // Ahora es un array
             'access_token' => $userData['token'],
         ], 201);
     }
+
 }
