@@ -25,15 +25,19 @@ class TenantController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        // Tomar APP_URL del .env y quitar el prefijo http:// o https://
-        $baseUrl = parse_url(config('app.url'), PHP_URL_HOST); // Devuelve "api.localhost"
-        $tenantUrl = "{$request->tenant_id}.{$baseUrl}";
+        // Obtener las URLs base completas del frontend y backend desde el archivo .env
+        $frontendBaseUrl = env('FRONTEND_URL'); // Ejemplo: "http://foo.localhost"
+        $backendBaseUrl = env('APP_URL'); // Ejemplo: "http://api.localhost"
+
+        // Construir las URLs dinámicas completas del tenant
+        $frontendTenantUrl = "http://{$request->tenant_id}." . parse_url($frontendBaseUrl, PHP_URL_HOST);  // Ejemplo: "tenant1.foo.localhost"
+        $backendTenantUrl = "{$request->tenant_id}." . parse_url($backendBaseUrl, PHP_URL_HOST); // Ejemplo: "tenant1.api.localhost"
 
         // Crear el tenant
         $tenant = Tenant::create(['id' => $request->tenant_id]);
 
         // Crear el dominio para el tenant
-        $tenant->domains()->create(['domain' => $tenantUrl]);
+        $tenant->domains()->create(['domain' => $backendTenantUrl]);
 
         // Crear la base de datos, ejecutar las migraciones y asignar rol al usuario
         $userData = $tenant->run(function () use ($request) {
@@ -65,7 +69,8 @@ class TenantController extends Controller
         return response()->json([
             'message' => 'Tenant and user created successfully with admin role',
             'tenant_id' => $tenant->id,
-            'domain' => $tenantUrl,
+            'frontend_url' => $frontendTenantUrl, // URL completa del frontend
+            'backend_url' => "{$backendBaseUrl}/api", // URL completa del backend
             'user' => $userData['user'], // Ahora es un array
             'access_token' => $userData['token'],
         ], 201);
