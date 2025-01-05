@@ -15,7 +15,12 @@ class TenantController extends Controller
     public function registerTenant(Request $request)
     {
         $validator = Validator::make(request()->all(), [
-            'tenant_id' => 'required|string|unique:tenants,id',
+            'tenant_id' => [
+                'required',
+                'string',
+                'regex:/^[a-zA-Z0-9\-]+$/', // Validar que solo contenga caracteres válidos
+                'unique:tenants,id',
+            ],
             'user_name' => 'required|string|max:255',
             'user_email' => 'required|email|unique:users,email',
             'user_password' => 'required|string|min:8',
