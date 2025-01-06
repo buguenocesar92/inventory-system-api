@@ -2,7 +2,7 @@
     "clientName": "Thunder Client",
     "collectionName": "sass",
     "collectionId": "0af06f85-76c6-445b-9a29-d9a50a598bcf",
-    "dateExported": "2025-01-04T16:56:13.540Z",
+    "dateExported": "2025-01-06T21:20:14.660Z",
     "version": "1.2",
     "folders": [],
     "requests": [
@@ -15,11 +15,11 @@
             "method": "GET",
             "sortNum": 10000,
             "created": "2025-01-04T15:45:55.668Z",
-            "modified": "2025-01-04T15:45:55.668Z",
+            "modified": "2025-01-06T21:03:24.796Z",
             "headers": [
                 {
                     "name": "Host",
-                    "value": "foo.localhost"
+                    "value": "foo.api.localhost"
                 }
             ]
         },
@@ -32,19 +32,102 @@
             "method": "GET",
             "sortNum": 20000,
             "created": "2025-01-04T16:56:06.329Z",
-            "modified": "2025-01-04T16:56:06.329Z",
+            "modified": "2025-01-04T20:33:53.693Z",
             "headers": [
                 {
                     "name": "Host",
-                    "value": "test.saas.local",
-                    "isDisabled": true
+                    "value": "foo.localhost"
                 }
             ],
             "auth": {
                 "type": "bearer",
-                "bearer": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MzU2Njk4NTcsImV4cCI6MTczNTY3MzQ1NywibmJmIjoxNzM1NjY5ODU3LCJqdGkiOiJpS0cyb0NHRG5vbE93aGNkIiwic3ViIjoiMyIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.X2bwwzuchRakKFRZHTGwCgTOEMe2tPrfHy6eCf-NcOs"
+                "bearer": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vZm9vLmxvY2FsaG9zdC9hcGkvYXV0aC9sb2dpbiIsImlhdCI6MTczNjAyMjgxMSwiZXhwIjoxNzM2MDI2NDExLCJuYmYiOjE3MzYwMjI4MTEsImp0aSI6IkZHaUt2d2R4czNWRmZYazMiLCJzdWIiOiIxIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.B0JjMxkAuD-4tO2CH_ra5xsABhg6pItS9MSXieoSNz8"
+            }
+        },
+        {
+            "_id": "98ecc075-47a3-4be8-8261-82c6f565eb80",
+            "colId": "0af06f85-76c6-445b-9a29-d9a50a598bcf",
+            "containerId": "",
+            "name": "http://localhost:8000/api/products",
+            "url": "http://localhost:8000/api/products",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2025-01-06T21:01:02.827Z",
+            "modified": "2025-01-06T21:08:35.491Z",
+            "headers": [
+                {
+                    "name": "Host",
+                    "value": "foo.api.localhost"
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vZm9vLmFwaS5sb2NhbGhvc3QvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MzYxOTc2OTYsImV4cCI6MTczNjIwMTI5NiwibmJmIjoxNzM2MTk3Njk2LCJqdGkiOiJ3UW56aGdxZXA4eGhjd2tNIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.vXzw-sWotl-P310q80pWmlzUgC7EcitgHoG8fpo1J2A"
+            }
+        },
+        {
+            "_id": "9b322e42-6661-4335-8cbf-17373868149b",
+            "colId": "0af06f85-76c6-445b-9a29-d9a50a598bcf",
+            "containerId": "",
+            "name": "http://localhost:8000/api/products",
+            "url": "http://localhost:8000/api/products",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2025-01-06T21:11:59.325Z",
+            "modified": "2025-01-06T21:18:37.905Z",
+            "headers": [
+                {
+                    "name": "Host",
+                    "value": "foo.api.localhost"
+                }
+            ],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "name",
+                        "value": "Red Wine"
+                    },
+                    {
+                        "name": "category",
+                        "value": "Alcoholic Beverages"
+                    },
+                    {
+                        "name": "brand",
+                        "value": "WineBrand"
+                    },
+                    {
+                        "name": "barcode",
+                        "value": "123456789012"
+                    },
+                    {
+                        "name": "description",
+                        "value": "A fine red wine with smooth flavor."
+                    },
+                    {
+                        "name": "image_url",
+                        "value": "https://example.com/images/red-wine.jpg"
+                    },
+                    {
+                        "name": "current_stock",
+                        "value": "50"
+                    },
+                    {
+                        "name": "reorder_point",
+                        "value": "10"
+                    },
+                    {
+                        "name": "unit_price",
+                        "value": "25.99"
+                    }
+                ]
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vZm9vLmFwaS5sb2NhbGhvc3QvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MzYxOTc2OTYsImV4cCI6MTczNjIwMTI5NiwibmJmIjoxNzM2MTk3Njk2LCJqdGkiOiJ3UW56aGdxZXA4eGhjd2tNIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.vXzw-sWotl-P310q80pWmlzUgC7EcitgHoG8fpo1J2A"
             }
         }
     ],
-    "ref": "m8ZwfmRCTdjqmOBcSLCgENt6Z6QcOSyihDx-Y2GuBKcREe5iHTe61ngZUjU06uwpok7vkFfGJRWI7ZC0rwWzMw"
+    "ref": "m8ZwfmRCTdjqmOBcSLCgEL5RkCSnDifRUCg1PWsZChmjzRU_czKZX-m9ERsd_tjeZJhD1yU54QmRHQmGJliZMg"
 }
