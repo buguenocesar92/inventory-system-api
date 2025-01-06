@@ -2,7 +2,7 @@
     "clientName": "Thunder Client",
     "collectionName": "tenant",
     "collectionId": "9643dca3-32e7-41aa-b8b4-0b4a05721c41",
-    "dateExported": "2025-01-04T17:36:46.942Z",
+    "dateExported": "2025-01-06T21:20:43.580Z",
     "version": "1.2",
     "folders": [],
     "requests": [
@@ -15,7 +15,7 @@
             "method": "POST",
             "sortNum": 10000,
             "created": "2025-01-04T17:36:32.585Z",
-            "modified": "2025-01-04T17:36:32.585Z",
+            "modified": "2025-01-06T20:47:10.278Z",
             "headers": [],
             "body": {
                 "type": "formdata",
@@ -23,19 +23,15 @@
                 "form": [
                     {
                         "name": "tenant_id",
-                        "value": "test1"
-                    },
-                    {
-                        "name": "domain",
-                        "value": "test1.localhost"
+                        "value": "foo"
                     },
                     {
                         "name": "user_name",
-                        "value": "test1"
+                        "value": "foo"
                     },
                     {
                         "name": "user_email",
-                        "value": "test1@gmail.com"
+                        "value": "foo@gmail.com"
                     },
                     {
                         "name": "user_password",
@@ -45,5 +41,5 @@
             }
         }
     ],
-    "ref": "l_vjkCYQED6-WjDAnesR6T46th9uV_tiJzPSpfiemY7X8Gk7P5Wa7mZvRrFja66TGWzjX-Zv9SVV9s01Hev9VA"
+    "ref": "l_vjkCYQED6-WjDAnesR6WFC6_h97BM2DfEUQIES9kRMij4q1PVsbU2KDEv0AHpsRZmdY3tjWSSPUZ5eeMrBXw"
 }

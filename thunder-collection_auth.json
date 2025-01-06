@@ -2,7 +2,7 @@
     "clientName": "Thunder Client",
     "collectionName": "auth",
     "collectionId": "ae8017f2-24a0-4b1b-bc32-2360a112905e",
-    "dateExported": "2025-01-04T16:56:25.300Z",
+    "dateExported": "2025-01-06T21:20:33.941Z",
     "version": "1.2",
     "folders": [],
     "requests": [
@@ -15,15 +15,20 @@
             "method": "POST",
             "sortNum": 15000,
             "created": "2025-01-04T16:55:12.617Z",
-            "modified": "2025-01-04T16:55:12.617Z",
-            "headers": [],
+            "modified": "2025-01-06T21:08:16.743Z",
+            "headers": [
+                {
+                    "name": "Host",
+                    "value": "foo.api.localhost"
+                }
+            ],
             "body": {
                 "type": "formdata",
                 "raw": "",
                 "form": [
                     {
                         "name": "email",
-                        "value": "test@gmail.com"
+                        "value": "foo@gmail.com"
                     },
                     {
                         "name": "password",
@@ -124,5 +129,5 @@
             }
         }
     ],
-    "ref": "okHA7gOpReZ5l8xWoi9FnD_eJiNvAazARWPAIi0pbNxYjj5urtgk5Oa157eAd2jPS1iGe34CJWbL74fMeqbGBg"
+    "ref": "okHA7gOpReZ5l8xWoi9FnOQtLqGVT65Rv8NtWbTBnR4FoYDiRD3FT__2s5v_rPugkN5wITeFjzsldhgDy6jIYg"
 }
