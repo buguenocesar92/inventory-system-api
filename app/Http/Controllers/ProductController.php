@@ -13,6 +13,11 @@ class ProductController extends Controller
         return Product::with('movements')->get();
     }
 
+    public function show(Product $product)
+    {
+        return $product;
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make(request()->all(), [
@@ -36,7 +41,7 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-        $request->validate([
+        $validator = Validator::make(request()->all(), [
             'name' => 'string|max:255',
             'category' => 'string|max:100',
             'brand' => 'string|max:100',
@@ -48,6 +53,10 @@ class ProductController extends Controller
             'unit_price' => 'numeric|min:0',
         ]);
 
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
         $product->update($request->all());
         return $product;
     }
@@ -55,6 +64,7 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
-        return response()->noContent();
+        return response()->json(['message' => 'Product deleted successfully.'], 200); // HTTP 200: OK
     }
+
 }
