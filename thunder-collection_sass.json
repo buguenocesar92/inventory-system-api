@@ -2,7 +2,7 @@
     "clientName": "Thunder Client",
     "collectionName": "sass",
     "collectionId": "0af06f85-76c6-445b-9a29-d9a50a598bcf",
-    "dateExported": "2025-01-06T21:20:14.660Z",
+    "dateExported": "2025-01-06T21:38:53.329Z",
     "version": "1.2",
     "folders": [],
     "requests": [
@@ -51,7 +51,7 @@
             "name": "http://localhost:8000/api/products",
             "url": "http://localhost:8000/api/products",
             "method": "GET",
-            "sortNum": 20000,
+            "sortNum": 25000,
             "created": "2025-01-06T21:01:02.827Z",
             "modified": "2025-01-06T21:08:35.491Z",
             "headers": [
@@ -72,9 +72,9 @@
             "name": "http://localhost:8000/api/products",
             "url": "http://localhost:8000/api/products",
             "method": "POST",
-            "sortNum": 20000,
+            "sortNum": 30000,
             "created": "2025-01-06T21:11:59.325Z",
-            "modified": "2025-01-06T21:18:37.905Z",
+            "modified": "2025-01-06T21:27:44.732Z",
             "headers": [
                 {
                     "name": "Host",
@@ -99,7 +99,7 @@
                     },
                     {
                         "name": "barcode",
-                        "value": "123456789012"
+                        "value": "123456789044"
                     },
                     {
                         "name": "description",
@@ -127,7 +127,75 @@
                 "type": "bearer",
                 "bearer": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vZm9vLmFwaS5sb2NhbGhvc3QvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MzYxOTc2OTYsImV4cCI6MTczNjIwMTI5NiwibmJmIjoxNzM2MTk3Njk2LCJqdGkiOiJ3UW56aGdxZXA4eGhjd2tNIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.vXzw-sWotl-P310q80pWmlzUgC7EcitgHoG8fpo1J2A"
             }
+        },
+        {
+            "_id": "79218d6a-2836-462e-9332-70e08477989c",
+            "colId": "0af06f85-76c6-445b-9a29-d9a50a598bcf",
+            "containerId": "",
+            "name": "http://localhost:8000/api/products/{product}",
+            "url": "http://localhost:8000/api/products/1",
+            "method": "GET",
+            "sortNum": 35000,
+            "created": "2025-01-06T21:30:45.396Z",
+            "modified": "2025-01-06T21:32:20.441Z",
+            "headers": [
+                {
+                    "name": "Host",
+                    "value": "foo.api.localhost"
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vZm9vLmFwaS5sb2NhbGhvc3QvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MzYxOTc2OTYsImV4cCI6MTczNjIwMTI5NiwibmJmIjoxNzM2MTk3Njk2LCJqdGkiOiJ3UW56aGdxZXA4eGhjd2tNIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.vXzw-sWotl-P310q80pWmlzUgC7EcitgHoG8fpo1J2A"
+            }
+        },
+        {
+            "_id": "29680bb5-2df6-4bac-ac84-1c1aab50bda5",
+            "colId": "0af06f85-76c6-445b-9a29-d9a50a598bcf",
+            "containerId": "",
+            "name": "http://localhost:8000/api/products/{product}",
+            "url": "http://localhost:8000/api/products/1",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2025-01-06T21:29:24.508Z",
+            "modified": "2025-01-06T21:35:10.876Z",
+            "headers": [
+                {
+                    "name": "Host",
+                    "value": "foo.api.localhost"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\r\n    \"name\": \"Red Red Wine\",\r\n    \"category\": \"Alcoholic Beverages\",\r\n    \"brand\": \"WineBrand\",\r\n    \"barcode\": \"123456789012\",\r\n    \"description\": \"A fine red wine with smooth flavor.\",\r\n    \"image_url\": \"https://example.com/images/red-wine.jpg\",\r\n    \"current_stock\": 50,\r\n    \"reorder_point\": 10,\r\n    \"unit_price\": 25.99\r\n}\r\n",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vZm9vLmFwaS5sb2NhbGhvc3QvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MzYxOTc2OTYsImV4cCI6MTczNjIwMTI5NiwibmJmIjoxNzM2MTk3Njk2LCJqdGkiOiJ3UW56aGdxZXA4eGhjd2tNIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.vXzw-sWotl-P310q80pWmlzUgC7EcitgHoG8fpo1J2A"
+            }
+        },
+        {
+            "_id": "a6f13d80-604f-4e59-b9ca-ce000e1c3027",
+            "colId": "0af06f85-76c6-445b-9a29-d9a50a598bcf",
+            "containerId": "",
+            "name": "http://localhost:8000/api/products/{product} Copy",
+            "url": "http://localhost:8000/api/products/2",
+            "method": "DELETE",
+            "sortNum": 45000,
+            "created": "2025-01-06T21:36:59.908Z",
+            "modified": "2025-01-06T21:38:34.689Z",
+            "headers": [
+                {
+                    "name": "Host",
+                    "value": "foo.api.localhost"
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vZm9vLmFwaS5sb2NhbGhvc3QvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MzYxOTc2OTYsImV4cCI6MTczNjIwMTI5NiwibmJmIjoxNzM2MTk3Njk2LCJqdGkiOiJ3UW56aGdxZXA4eGhjd2tNIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.vXzw-sWotl-P310q80pWmlzUgC7EcitgHoG8fpo1J2A"
+            }
         }
     ],
-    "ref": "m8ZwfmRCTdjqmOBcSLCgEL5RkCSnDifRUCg1PWsZChmjzRU_czKZX-m9ERsd_tjeZJhD1yU54QmRHQmGJliZMg"
+    "ref": "m8ZwfmRCTdjqmOBcSLCgEG02y6cV3sQ8H0iLX12olLFfEoW3rQM00ShlOMhXphSRW7YRuFNOLDSsfgXYGyUl5Q"
 }
