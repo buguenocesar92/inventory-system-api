@@ -2,7 +2,7 @@
     "clientName": "Thunder Client",
     "collectionName": "sass",
     "collectionId": "0af06f85-76c6-445b-9a29-d9a50a598bcf",
-    "dateExported": "2025-01-06T21:38:53.329Z",
+    "dateExported": "2025-01-06T22:07:53.089Z",
     "version": "1.2",
     "folders": [],
     "requests": [
@@ -74,7 +74,7 @@
             "method": "POST",
             "sortNum": 30000,
             "created": "2025-01-06T21:11:59.325Z",
-            "modified": "2025-01-06T21:27:44.732Z",
+            "modified": "2025-01-06T22:07:21.871Z",
             "headers": [
                 {
                     "name": "Host",
@@ -87,7 +87,7 @@
                 "form": [
                     {
                         "name": "name",
-                        "value": "Red Wine"
+                        "value": "White Wine"
                     },
                     {
                         "name": "category",
@@ -99,7 +99,7 @@
                     },
                     {
                         "name": "barcode",
-                        "value": "123456789044"
+                        "value": "123456789032"
                     },
                     {
                         "name": "description",
@@ -176,6 +176,49 @@
             }
         },
         {
+            "_id": "ddd87b9b-e0e1-4ccb-a9c2-fd1c368382df",
+            "colId": "0af06f85-76c6-445b-9a29-d9a50a598bcf",
+            "containerId": "",
+            "name": "http://localhost:8000/api/inventory/movements",
+            "url": "http://localhost:8000/api/inventory/movements",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2025-01-06T22:05:02.158Z",
+            "modified": "2025-01-06T22:07:33.729Z",
+            "headers": [
+                {
+                    "name": "Host",
+                    "value": "foo.api.localhost"
+                }
+            ],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "product_id",
+                        "value": "3"
+                    },
+                    {
+                        "name": "movement_type",
+                        "value": "entry"
+                    },
+                    {
+                        "name": "quantity",
+                        "value": "20"
+                    },
+                    {
+                        "name": "description",
+                        "value": "Restocking inventory."
+                    }
+                ]
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vZm9vLmFwaS5sb2NhbGhvc3QvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MzYxOTc2OTYsImV4cCI6MTczNjIwMTI5NiwibmJmIjoxNzM2MTk3Njk2LCJqdGkiOiJ3UW56aGdxZXA4eGhjd2tNIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.vXzw-sWotl-P310q80pWmlzUgC7EcitgHoG8fpo1J2A"
+            }
+        },
+        {
             "_id": "a6f13d80-604f-4e59-b9ca-ce000e1c3027",
             "colId": "0af06f85-76c6-445b-9a29-d9a50a598bcf",
             "containerId": "",
@@ -197,5 +240,5 @@
             }
         }
     ],
-    "ref": "m8ZwfmRCTdjqmOBcSLCgEG02y6cV3sQ8H0iLX12olLFfEoW3rQM00ShlOMhXphSRW7YRuFNOLDSsfgXYGyUl5Q"
+    "ref": "m8ZwfmRCTdjqmOBcSLCgEA-EhcrbhRG1eCGQiYG0NnXdoeiMwvF4Pvzckm005ZHkV6C2Xxcy253QqKkykBjqrQ"
 }

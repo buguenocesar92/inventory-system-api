@@ -5,17 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\InventoryMovement;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class InventoryMovementController extends Controller
 {
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make(request()->all(), [
             'product_id' => 'required|exists:products,id',
             'movement_type' => 'required|in:entry,exit,adjustment',
             'quantity' => 'required|integer|min:1',
             'description' => 'nullable|string',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
 
         $product = Product::findOrFail($request->product_id);
 
