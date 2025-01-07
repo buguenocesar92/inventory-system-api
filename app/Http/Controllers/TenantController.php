@@ -27,8 +27,9 @@ class TenantController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
+            return response()->json($validator->errors(), 400);
         }
+
 
         // Obtener las URLs base completas del frontend y backend desde el archivo .env
         $frontendBaseUrl = env('FRONTEND_URL'); // Ejemplo: "http://foo.localhost"
