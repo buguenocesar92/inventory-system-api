@@ -17,4 +17,5 @@ class UserRepository
     {
         return $this->model->create($data);
     }
+
 }
