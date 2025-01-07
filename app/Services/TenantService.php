@@ -21,27 +21,15 @@ class TenantService
 
     public function registerTenant(array $data): array
     {
-        $frontendBaseUrl = env('FRONTEND_URL');
-        $backendBaseUrl = env('APP_URL');
-
-        $frontendTenantUrl = "http://{$data['tenant_id']}." . parse_url($frontendBaseUrl, PHP_URL_HOST);
-        $backendTenantUrl = "{$data['tenant_id']}." . parse_url($backendBaseUrl, PHP_URL_HOST);
+        $frontendTenantUrl = $this->generateTenantUrl($data['tenant_id'], env('FRONTEND_URL'), true);
+        $backendTenantUrl = $this->generateTenantUrl($data['tenant_id'], env('APP_URL'), false);
 
         $tenant = $this->tenantRepository->createTenant($data['tenant_id'], $backendTenantUrl);
 
         $userData = $tenant->run(function () use ($data) {
-            // Crear el rol admin si no existe
-            if (!Role::where('name', 'admin')->exists()) {
-                Role::create(['name' => 'admin']);
-            }
+            $this->ensureAdminRoleExists();
 
-            $user = $this->userRepository->create([
-                'name' => $data['user_name'],
-                'email' => $data['user_email'],
-                'password' => Hash::make($data['user_password']),
-            ]);
-
-            $user->assignRole('admin');
+            $user = $this->createAdminUser($data);
 
             $token = JWTAuth::fromUser($user);
 
@@ -55,9 +43,44 @@ class TenantService
             'message' => 'Tenant and user created successfully with admin role',
             'tenant_id' => $tenant->id,
             'frontend_url' => $frontendTenantUrl,
-            'backend_url' => "{$backendBaseUrl}/api",
+            'backend_url' => "{$backendTenantUrl}/api",
             'user' => $userData['user'],
             'access_token' => $userData['token'],
         ];
+    }
+
+    /**
+     * Ensure the "admin" role exists in the system.
+     */
+    private function ensureAdminRoleExists(): void
+    {
+        if (!Role::where('name', 'admin')->exists()) {
+            Role::create(['name' => 'admin']);
+        }
+    }
+
+    /**
+     * Create an admin user and assign the "admin" role.
+     */
+    private function createAdminUser(array $data)
+    {
+        $user = $this->userRepository->create([
+            'name' => $data['user_name'],
+            'email' => $data['user_email'],
+            'password' => Hash::make($data['user_password']),
+        ]);
+
+        $user->assignRole('admin');
+
+        return $user;
+    }
+
+    /**
+     * Generate a tenant-specific URL based on a base URL and tenant ID.
+     */
+    private function generateTenantUrl(string $tenantId, string $baseUrl, bool $isFrontend = true): string
+    {
+        $parsedHost = parse_url($baseUrl, PHP_URL_HOST);
+        return $isFrontend ? "http://{$tenantId}.{$parsedHost}" : "{$tenantId}.{$parsedHost}";
     }
 }
