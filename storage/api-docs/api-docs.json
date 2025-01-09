@@ -1,17 +1,14 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "API Documentation",
-        "description": "API documentation for the project",
-        "contact": {
-            "email": "support@example.com"
-        },
+        "title": "SaaS Starter Kit API",
+        "description": "Documentación de la API para el SaaS Starter Kit.",
         "version": "1.0.0"
     },
     "servers": [
         {
-            "url": "http://localhost/api",
-            "description": "Development Server"
+            "url": "http://127.0.0.1:8000/api",
+            "description": "Servidor de desarrollo local"
         }
     ],
     "paths": {
@@ -41,9 +38,137 @@
                     }
                 }
             }
+        },
+        "/tenants/register": {
+            "post": {
+                "tags": [
+                    "Tenant"
+                ],
+                "summary": "Registrar un nuevo tenant",
+                "description": "Crea un tenant y su usuario administrador asociado.",
+                "operationId": "registerTenant",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "tenant_id",
+                                    "user_name",
+                                    "user_email",
+                                    "user_password"
+                                ],
+                                "properties": {
+                                    "tenant_id": {
+                                        "description": "Identificador único del tenant.",
+                                        "type": "string"
+                                    },
+                                    "user_name": {
+                                        "description": "Nombre del usuario administrador.",
+                                        "type": "string"
+                                    },
+                                    "user_email": {
+                                        "description": "Correo electrónico del usuario administrador.",
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "user_password": {
+                                        "description": "Contraseña del usuario administrador. Debe tener al menos 8 caracteres.",
+                                        "type": "string",
+                                        "format": "password",
+                                        "minLength": 8
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tenant registrado con éxito.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Mensaje de éxito.",
+                                            "type": "string"
+                                        },
+                                        "tenant_id": {
+                                            "description": "ID del tenant creado.",
+                                            "type": "string"
+                                        },
+                                        "frontend_url": {
+                                            "description": "URL del frontend para el tenant.",
+                                            "type": "string"
+                                        },
+                                        "backend_url": {
+                                            "description": "URL del backend para el tenant.",
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "description": "Datos del usuario administrador.",
+                                            "properties": {
+                                                "name": {
+                                                    "description": "Nombre del administrador.",
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "description": "Correo electrónico del administrador.",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "access_token": {
+                                            "description": "Token JWT del usuario.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Datos inválidos.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Mensaje de error.",
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "description": "Detalles de los errores.",
+                                            "properties": {
+                                                "user_password": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "description": "El mensaje de error relacionado con el campo user_password.",
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "tags": [
+        {
+            "name": "Tenant",
+            "description": "Endpoints relacionados con la gestión de tenants."
+        },
         {
             "name": "Example",
             "description": "Example"
