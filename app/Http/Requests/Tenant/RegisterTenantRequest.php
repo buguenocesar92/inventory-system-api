@@ -3,7 +3,9 @@
 namespace App\Http\Requests\Tenant;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+/**
+ * Request para validar el registro de un tenant.
+ */
 class RegisterTenantRequest extends FormRequest
 {
     public function authorize(): bool
