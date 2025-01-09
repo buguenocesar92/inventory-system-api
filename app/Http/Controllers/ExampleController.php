@@ -5,17 +5,14 @@ use Illuminate\Http\Request;
 
 /**
  * @OA\Info(
- *     title="API Documentation",
+ *     title="SaaS Starter Kit API",
  *     version="1.0.0",
- *     description="API documentation for the project",
- *     @OA\Contact(
- *         email="support@example.com"
- *     )
+ *     description="Documentación de la API para el SaaS Starter Kit."
  * )
  *
  * @OA\Server(
- *     url="http://localhost/api",
- *     description="Development Server"
+ *     url="http://127.0.0.1:8000/api",
+ *     description="Servidor de desarrollo local"
  * )
  */
 class ExampleController extends Controller
