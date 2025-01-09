@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Requests\Inventory;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\ApiFormRequest;
 
-class InventoryMovementRequest extends FormRequest
+class InventoryMovementRequest extends ApiFormRequest
 {
     public function authorize(): bool
     {
