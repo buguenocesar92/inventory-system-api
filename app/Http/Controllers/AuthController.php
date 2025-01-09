@@ -2,101 +2,245 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
+use App\Services\AuthService;
+use Illuminate\Http\JsonResponse;
 
-
+/**
+ * @OA\Tag(
+ *     name="Authentication",
+ *     description="Endpoints relacionados con la autenticación de usuarios."
+ * )
+ */
 class AuthController extends Controller
 {
-        /**
-     * Register a User.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function register()
-    {
-        $validator = Validator::make(request()->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:8',
-        ]);
+    private AuthService $authService;
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
+    public function __construct(AuthService $authService)
+    {
+        $this->authService = $authService;
+    }
+
+    /**
+     * Iniciar sesión con credenciales.
+     *
+     * @OA\Post(
+     *     path="/auth/login",
+     *     tags={"Authentication"},
+     *     summary="Iniciar sesión",
+     *     description="Obtén un token JWT con credenciales válidas.",
+     *     operationId="loginUser",
+     *     @OA\Parameter(
+     *         name="Host",
+     *         in="header",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="Host del tenant al que pertenece la solicitud."
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             required={"email", "password"},
+     *             @OA\Property(property="email", type="string", format="email", description="Correo electrónico del usuario."),
+     *             @OA\Property(property="password", type="string", format="password", description="Contraseña del usuario.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Inicio de sesión exitoso.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="access_token", type="string", description="Token JWT generado."),
+     *             @OA\Property(property="token_type", type="string", description="Tipo de token."),
+     *             @OA\Property(property="expires_in", type="integer", description="Tiempo de expiración del token en segundos.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Credenciales inválidas.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="error", type="string", description="Mensaje de error.")
+     *         )
+     *     )
+     * )
+     *
+     * @param LoginRequest $request
+     * @return JsonResponse
+     */
+    public function login(LoginRequest $request): JsonResponse
+    {
+        $token = $this->authService->login($request->validated());
+
+        if (!$token) {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        // Crear usuario
-        $user = new User;
-        $user->name = request()->name;
-        $user->email = request()->email;
-        $user->password = bcrypt(request()->password);
-        $user->save();
+        return $this->authService->respondWithToken($token);
+    }
 
+    /**
+     * Registrar un usuario.
+     *
+     * @OA\Post(
+     *     path="/auth/register",
+     *     tags={"Authentication"},
+     *     summary="Registrar un usuario",
+     *     description="Crea un nuevo usuario. Requiere autenticación JWT.",
+     *     operationId="registerUser",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Parameter(
+     *         name="Host",
+     *         in="header",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="Host del tenant al que pertenece la solicitud."
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             required={"name", "email", "password"},
+     *             @OA\Property(property="name", type="string", description="Nombre del usuario."),
+     *             @OA\Property(property="email", type="string", format="email", description="Correo electrónico del usuario."),
+     *             @OA\Property(property="password", type="string", format="password", description="Contraseña del usuario.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Usuario registrado exitosamente.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="id", type="integer", description="ID del usuario registrado."),
+     *             @OA\Property(property="name", type="string", description="Nombre del usuario."),
+     *             @OA\Property(property="email", type="string", description="Correo electrónico del usuario.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Token inválido o expirado.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="error", type="string", description="Mensaje de error.")
+     *         )
+     *     )
+     * )
+     *
+     * @param RegisterRequest $request
+     * @return JsonResponse
+     */
+    public function register(RegisterRequest $request): JsonResponse
+    {
+        $user = $this->authService->register($request->validated());
         return response()->json($user, 201);
     }
 
     /**
-     * Get a JWT via given credentials.
+     * Obtener el usuario autenticado.
      *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function login()
-    {
-        $credentials = request(['email', 'password']);
-
-        if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
-        return $this->respondWithToken($token);
-    }
-
-    /**
-     * Get the authenticated User.
+     * @OA\Post(
+     *     path="/auth/me",
+     *     tags={"Authentication"},
+     *     summary="Obtener el usuario autenticado",
+     *     description="Devuelve la información del usuario autenticado.",
+     *     operationId="getAuthenticatedUser",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Parameter(
+     *         name="Host",
+     *         in="header",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="Host del tenant al que pertenece la solicitud."
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Usuario autenticado.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="id", type="integer", description="ID del usuario."),
+     *             @OA\Property(property="name", type="string", description="Nombre del usuario."),
+     *             @OA\Property(property="email", type="string", description="Correo electrónico del usuario.")
+     *         )
+     *     )
+     * )
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function me()
+    public function me(): JsonResponse
     {
         return response()->json(auth()->user());
     }
 
     /**
-     * Log the user out (Invalidate the token).
+     * Cerrar sesión.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Post(
+     *     path="/auth/logout",
+     *     tags={"Authentication"},
+     *     summary="Cerrar sesión",
+     *     description="Cierra la sesión del usuario actual.",
+     *     operationId="logoutUser",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Parameter(
+     *         name="Host",
+     *         in="header",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="Host del tenant al que pertenece la solicitud."
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Cierre de sesión exitoso.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", description="Mensaje de éxito.")
+     *         )
+     *     )
+     * )
+     *
+     * @return JsonResponse
      */
-    public function logout()
+    public function logout(): JsonResponse
     {
         auth()->logout();
-
         return response()->json(['message' => 'Successfully logged out']);
     }
 
     /**
-     * Refresh a token.
+     * Refrescar un token.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Post(
+     *     path="/auth/refresh",
+     *     tags={"Authentication"},
+     *     summary="Refrescar token",
+     *     description="Obtén un nuevo token JWT.",
+     *     operationId="refreshToken",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Parameter(
+     *         name="Host",
+     *         in="header",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="Host del tenant al que pertenece la solicitud."
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Token refrescado con éxito.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="access_token", type="string", description="Nuevo token JWT."),
+     *             @OA\Property(property="token_type", type="string", description="Tipo de token."),
+     *             @OA\Property(property="expires_in", type="integer", description="Tiempo de expiración del token.")
+     *         )
+     *     )
+     * )
+     *
+     * @return JsonResponse
      */
-    public function refresh()
+    public function refresh(): JsonResponse
     {
-        return $this->respondWithToken(auth()->refresh());
-    }
-
-    /**
-     * Get the token array structure.
-     *
-     * @param  string $token
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function respondWithToken($token)
-    {
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
-        ]);
+        return $this->authService->respondWithToken(auth()->refresh());
     }
 }

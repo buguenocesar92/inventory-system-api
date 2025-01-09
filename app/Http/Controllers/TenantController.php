@@ -2,83 +2,94 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\Tenant;
-use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
+use App\Http\Requests\Tenant\RegisterTenantRequest;
+use App\Services\TenantService;
+use Illuminate\Http\JsonResponse;
 
+/**
+ * @OA\Tag(
+ *     name="Tenant",
+ *     description="Endpoints relacionados con la gestión de tenants."
+ * )
+ */
 class TenantController extends Controller
 {
-    public function registerTenant(Request $request)
+    private TenantService $tenantService;
+
+    public function __construct(TenantService $tenantService)
     {
-        $validator = Validator::make(request()->all(), [
-            'tenant_id' => [
-                'required',
-                'string',
-                'regex:/^[a-zA-Z0-9\-]+$/', // Validar que solo contenga caracteres válidos
-                'unique:tenants,id',
-            ],
-            'user_name' => 'required|string|max:255',
-            'user_email' => 'required|email|unique:users,email',
-            'user_password' => 'required|string|min:8',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
-        }
-
-        // Obtener las URLs base completas del frontend y backend desde el archivo .env
-        $frontendBaseUrl = env('FRONTEND_URL'); // Ejemplo: "http://foo.localhost"
-        $backendBaseUrl = env('APP_URL'); // Ejemplo: "http://api.localhost"
-
-        // Construir las URLs dinámicas completas del tenant
-        $frontendTenantUrl = "http://{$request->tenant_id}." . parse_url($frontendBaseUrl, PHP_URL_HOST);  // Ejemplo: "tenant1.foo.localhost"
-        $backendTenantUrl = "{$request->tenant_id}." . parse_url($backendBaseUrl, PHP_URL_HOST); // Ejemplo: "tenant1.api.localhost"
-
-        // Crear el tenant
-        $tenant = Tenant::create(['id' => $request->tenant_id]);
-
-        // Crear el dominio para el tenant
-        $tenant->domains()->create(['domain' => $backendTenantUrl]);
-
-        // Crear la base de datos, ejecutar las migraciones y asignar rol al usuario
-        $userData = $tenant->run(function () use ($request) {
-            // Crear el rol admin si no existe
-            if (!Role::where('name', 'admin')->exists()) {
-                Role::create(['name' => 'admin']);
-            }
-
-            // Crear el usuario
-            $user = User::create([
-                'name' => $request->user_name,
-                'email' => $request->user_email,
-                'password' => Hash::make($request->user_password),
-            ]);
-
-            // Asignar el rol admin al usuario
-            $user->assignRole('admin');
-
-            if (!$token = JWTAuth::fromUser($user)) {
-                return response()->json(['error' => 'Could not generate token'], 500);
-            }
-
-            return [
-                'user' => $user->toArray(),
-                'token' => $token,
-            ];
-        });
-
-        return response()->json([
-            'message' => 'Tenant and user created successfully with admin role',
-            'tenant_id' => $tenant->id,
-            'frontend_url' => $frontendTenantUrl, // URL completa del frontend
-            'backend_url' => "{$backendBaseUrl}/api", // URL completa del backend
-            'user' => $userData['user'], // Ahora es un array
-            'access_token' => $userData['token'],
-        ], 201);
+        $this->tenantService = $tenantService;
     }
 
+    /**
+     * Registrar un nuevo tenant y su usuario administrador.
+     *
+     * @OA\Post(
+     *     path="/tenants/register",
+     *     tags={"Tenant"},
+     *     summary="Registrar un nuevo tenant",
+     *     description="Crea un tenant y su usuario administrador asociado.",
+     *     operationId="registerTenant",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 required={"tenant_id", "user_name", "user_email", "user_password"},
+     *                 @OA\Property(property="tenant_id", type="string", description="Identificador único del tenant."),
+     *                 @OA\Property(property="user_name", type="string", description="Nombre del usuario administrador."),
+     *                 @OA\Property(property="user_email", type="string", format="email", description="Correo electrónico del usuario administrador."),
+     *                 @OA\Property(
+     *                     property="user_password",
+     *                     type="string",
+     *                     format="password",
+     *                     description="Contraseña del usuario administrador. Debe tener al menos 8 caracteres.",
+     *                     minLength=8
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Tenant registrado con éxito.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", description="Mensaje de éxito."),
+     *             @OA\Property(property="tenant_id", type="string", description="ID del tenant creado."),
+     *             @OA\Property(property="frontend_url", type="string", description="URL del frontend para el tenant."),
+     *             @OA\Property(property="backend_url", type="string", description="URL del backend para el tenant."),
+     *             @OA\Property(property="user", type="object", description="Datos del usuario administrador.",
+     *                 @OA\Property(property="name", type="string", description="Nombre del administrador."),
+     *                 @OA\Property(property="email", type="string", description="Correo electrónico del administrador.")
+     *             ),
+     *             @OA\Property(property="access_token", type="string", description="Token JWT del usuario.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Datos inválidos.",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", description="Mensaje de error."),
+     *             @OA\Property(property="errors", type="object", description="Detalles de los errores.",
+     *                 @OA\Property(
+     *                     property="user_password",
+     *                     type="array",
+     *                     @OA\Items(type="string", description="El mensaje de error relacionado con el campo user_password.")
+     *                 )
+     *             )
+     *         )
+     *     )
+     * )
+     */
+
+    public function registerTenant(RegisterTenantRequest $request): JsonResponse
+    {
+        $data = $this->tenantService->registerTenant($request->validated());
+
+        return response()->json($data, 201);
+    }
 }
+
+

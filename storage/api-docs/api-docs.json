@@ -1,0 +1,517 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "SaaS Starter Kit API",
+        "description": "Documentación de la API para el SaaS Starter Kit.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000/api",
+            "description": "Servidor de desarrollo local"
+        }
+    ],
+    "paths": {
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Iniciar sesión",
+                "description": "Obtén un token JWT con credenciales válidas.",
+                "operationId": "loginUser",
+                "parameters": [
+                    {
+                        "name": "Host",
+                        "in": "header",
+                        "description": "Host del tenant al que pertenece la solicitud.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "description": "Correo electrónico del usuario.",
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "description": "Contraseña del usuario.",
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Inicio de sesión exitoso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "description": "Token JWT generado.",
+                                            "type": "string"
+                                        },
+                                        "token_type": {
+                                            "description": "Tipo de token.",
+                                            "type": "string"
+                                        },
+                                        "expires_in": {
+                                            "description": "Tiempo de expiración del token en segundos.",
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Credenciales inválidas.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "description": "Mensaje de error.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Registrar un usuario",
+                "description": "Crea un nuevo usuario. Requiere autenticación JWT.",
+                "operationId": "registerUser",
+                "parameters": [
+                    {
+                        "name": "Host",
+                        "in": "header",
+                        "description": "Host del tenant al que pertenece la solicitud.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Nombre del usuario.",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "description": "Correo electrónico del usuario.",
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "description": "Contraseña del usuario.",
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuario registrado exitosamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID del usuario registrado.",
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "description": "Nombre del usuario.",
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "description": "Correo electrónico del usuario.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Token inválido o expirado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "description": "Mensaje de error.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/auth/me": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Obtener el usuario autenticado",
+                "description": "Devuelve la información del usuario autenticado.",
+                "operationId": "getAuthenticatedUser",
+                "parameters": [
+                    {
+                        "name": "Host",
+                        "in": "header",
+                        "description": "Host del tenant al que pertenece la solicitud.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuario autenticado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID del usuario.",
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "description": "Nombre del usuario.",
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "description": "Correo electrónico del usuario.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Cerrar sesión",
+                "description": "Cierra la sesión del usuario actual.",
+                "operationId": "logoutUser",
+                "parameters": [
+                    {
+                        "name": "Host",
+                        "in": "header",
+                        "description": "Host del tenant al que pertenece la solicitud.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cierre de sesión exitoso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Mensaje de éxito.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/auth/refresh": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Refrescar token",
+                "description": "Obtén un nuevo token JWT.",
+                "operationId": "refreshToken",
+                "parameters": [
+                    {
+                        "name": "Host",
+                        "in": "header",
+                        "description": "Host del tenant al que pertenece la solicitud.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Token refrescado con éxito.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "description": "Nuevo token JWT.",
+                                            "type": "string"
+                                        },
+                                        "token_type": {
+                                            "description": "Tipo de token.",
+                                            "type": "string"
+                                        },
+                                        "expires_in": {
+                                            "description": "Tiempo de expiración del token.",
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/example": {
+            "get": {
+                "tags": [
+                    "Example"
+                ],
+                "summary": "Get example data",
+                "operationId": "2bea81dd24e5d9c2e49760b4310620e1",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "string",
+                                            "example": "Hello World"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tenants/register": {
+            "post": {
+                "tags": [
+                    "Tenant"
+                ],
+                "summary": "Registrar un nuevo tenant",
+                "description": "Crea un tenant y su usuario administrador asociado.",
+                "operationId": "registerTenant",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "tenant_id",
+                                    "user_name",
+                                    "user_email",
+                                    "user_password"
+                                ],
+                                "properties": {
+                                    "tenant_id": {
+                                        "description": "Identificador único del tenant.",
+                                        "type": "string"
+                                    },
+                                    "user_name": {
+                                        "description": "Nombre del usuario administrador.",
+                                        "type": "string"
+                                    },
+                                    "user_email": {
+                                        "description": "Correo electrónico del usuario administrador.",
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "user_password": {
+                                        "description": "Contraseña del usuario administrador. Debe tener al menos 8 caracteres.",
+                                        "type": "string",
+                                        "format": "password",
+                                        "minLength": 8
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tenant registrado con éxito.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Mensaje de éxito.",
+                                            "type": "string"
+                                        },
+                                        "tenant_id": {
+                                            "description": "ID del tenant creado.",
+                                            "type": "string"
+                                        },
+                                        "frontend_url": {
+                                            "description": "URL del frontend para el tenant.",
+                                            "type": "string"
+                                        },
+                                        "backend_url": {
+                                            "description": "URL del backend para el tenant.",
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "description": "Datos del usuario administrador.",
+                                            "properties": {
+                                                "name": {
+                                                    "description": "Nombre del administrador.",
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "description": "Correo electrónico del administrador.",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "access_token": {
+                                            "description": "Token JWT del usuario.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Datos inválidos.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Mensaje de error.",
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "description": "Detalles de los errores.",
+                                            "properties": {
+                                                "user_password": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "description": "El mensaje de error relacionado con el campo user_password.",
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "Endpoints relacionados con la autenticación de usuarios."
+        },
+        {
+            "name": "Tenant",
+            "description": "Endpoints relacionados con la gestión de tenants."
+        },
+        {
+            "name": "Example",
+            "description": "Example"
+        }
+    ]
+}
