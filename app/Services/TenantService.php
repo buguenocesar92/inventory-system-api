@@ -7,7 +7,9 @@ use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
-
+/**
+ * Servicio para manejar operaciones relacionadas con tenants.
+ */
 class TenantService
 {
     private TenantRepository $tenantRepository;
@@ -18,7 +20,12 @@ class TenantService
         $this->tenantRepository = $tenantRepository;
         $this->userRepository = $userRepository;
     }
-
+    /**
+     * Registrar un tenant y su usuario administrador.
+     *
+     * @param array $data Datos para crear el tenant y el usuario.
+     * @return array Respuesta con información del tenant y usuario.
+     */
     public function registerTenant(array $data): array
     {
         $frontendTenantUrl = $this->generateTenantUrl($data['tenant_id'], env('FRONTEND_URL'), true);
@@ -50,7 +57,7 @@ class TenantService
     }
 
     /**
-     * Ensure the "admin" role exists in the system.
+     * Asegurar que el rol de "admin" exista en el sistema.
      */
     private function ensureAdminRoleExists(): void
     {
@@ -60,7 +67,10 @@ class TenantService
     }
 
     /**
-     * Create an admin user and assign the "admin" role.
+     * Crear un usuario administrador y asignarle el rol "admin".
+     *
+     * @param array $data Datos del usuario.
+     * @return \App\Models\User Usuario creado.
      */
     private function createAdminUser(array $data)
     {
@@ -76,7 +86,12 @@ class TenantService
     }
 
     /**
-     * Generate a tenant-specific URL based on a base URL and tenant ID.
+     * Generar una URL específica para el tenant.
+     *
+     * @param string $tenantId ID del tenant.
+     * @param string $baseUrl URL base.
+     * @param bool $isFrontend Si la URL es para el frontend.
+     * @return string URL generada.
      */
     private function generateTenantUrl(string $tenantId, string $baseUrl, bool $isFrontend = true): string
     {
