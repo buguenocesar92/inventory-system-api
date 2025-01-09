@@ -2,69 +2,65 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Product\StoreProductRequest;
+use App\Http\Requests\Product\UpdateProductRequest;
+use App\Services\ProductService;
 use App\Models\Product;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\JsonResponse;
 
 class ProductController extends Controller
 {
-    public function index()
+    private ProductService $productService;
+
+    public function __construct(ProductService $productService)
     {
-        return Product::with('movements')->get();
+        $this->productService = $productService;
     }
 
-    public function show(Product $product)
+    /**
+     * Listar todos los productos.
+     */
+    public function index(): JsonResponse
     {
-        return $product;
+        $products = $this->productService->getAll();
+        return response()->json($products);
     }
 
-    public function store(Request $request)
+    /**
+     * Mostrar un producto específico.
+     */
+    public function show(Product $product): JsonResponse
     {
-        $validator = Validator::make(request()->all(), [
-            'name' => 'required|string|max:255',
-            'category' => 'required|string|max:100',
-            'brand' => 'nullable|string|max:100',
-            'barcode' => 'nullable|string|unique:products,barcode',
-            'description' => 'nullable|string',
-            'image_url' => 'nullable|url',
-            'current_stock' => 'required|integer|min:0',
-            'reorder_point' => 'required|integer|min:0',
-            'unit_price' => 'required|numeric|min:0',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
-        }
-
-        return Product::create($request->all());
+        $product = $this->productService->find($product);
+        return response()->json($product);
     }
 
-    public function update(Request $request, Product $product)
+    /**
+     * Crear un nuevo producto.
+     */
+    public function store(StoreProductRequest $request): JsonResponse
     {
-        $validator = Validator::make(request()->all(), [
-            'name' => 'string|max:255',
-            'category' => 'string|max:100',
-            'brand' => 'string|max:100',
-            'barcode' => 'string|unique:products,barcode,' . $product->id,
-            'description' => 'string',
-            'image_url' => 'url',
-            'current_stock' => 'integer|min:0',
-            'reorder_point' => 'integer|min:0',
-            'unit_price' => 'numeric|min:0',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
-        }
-
-        $product->update($request->all());
-        return $product;
+        $validatedData = $request->validated();
+        $product = $this->productService->create($validatedData);
+        return response()->json($product, 201); // HTTP 201: Created
     }
 
-    public function destroy(Product $product)
+    /**
+     * Actualizar un producto existente.
+     */
+    public function update(UpdateProductRequest $request, Product $product): JsonResponse
     {
-        $product->delete();
+        $validatedData = $request->validated();
+        $product = $this->productService->update($product, $validatedData);
+        return response()->json($product);
+    }
+
+    /**
+     * Eliminar un producto.
+     */
+    public function destroy(Product $product): JsonResponse
+    {
+        $this->productService->delete($product);
         return response()->json(['message' => 'Product deleted successfully.'], 200); // HTTP 200: OK
     }
-
 }
