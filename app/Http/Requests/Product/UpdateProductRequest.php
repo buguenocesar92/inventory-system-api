@@ -27,8 +27,8 @@ class UpdateProductRequest extends ApiFormRequest
             'barcode' => 'sometimes|string|unique:products,barcode,' . $this->product->id,
             'description' => 'sometimes|string',
             'image_url' => 'sometimes|url',
-            'current_stock' => 'sometimes|integer|min:0',
-            'reorder_point' => 'sometimes|integer|min:0',
+/*             'current_stock' => 'sometimes|integer|min:0', */
+         /*    'reorder_point' => 'sometimes|integer|min:0', */
             'unit_price' => 'sometimes|numeric|min:0',
         ];
     }
