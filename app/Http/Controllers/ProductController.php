@@ -7,6 +7,7 @@ use App\Http\Requests\Product\UpdateProductRequest;
 use App\Services\ProductService;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -20,9 +21,15 @@ class ProductController extends Controller
     /**
      * Listar todos los productos.
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $products = $this->productService->getAll();
+        $products = $this->productService->getAll(
+            $request->query('page', 1), // Página actual
+            $request->query('itemsPerPage', 10), // Número de elementos por página
+            $request->query('sortBy', []), // Ordenamiento
+            $request->query('search', '') // Búsqueda
+        );
+
         return response()->json($products);
     }
 
