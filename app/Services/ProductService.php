@@ -14,9 +14,9 @@ class ProductService
         $this->productRepository = $productRepository;
     }
 
-    public function getAll()
+    public function getAll(int $page, int $itemsPerPage, array $sortBy, string $search)
     {
-        return $this->productRepository->getAll();
+        return $this->productRepository->getAll($page, $itemsPerPage, $sortBy, $search);
     }
 
     public function find(Product $product): Product
