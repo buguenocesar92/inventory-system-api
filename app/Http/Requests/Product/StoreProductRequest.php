@@ -17,12 +17,23 @@ class StoreProductRequest extends ApiFormRequest
             'name'          => 'required|string|max:255',
             'category'      => 'required|string|max:100',
             'brand'         => 'nullable|string|max:100',
-            'barcode'       => 'nullable|string|unique:products,barcode',
+            'barcode'       => 'nullable|string|unique:products,barcode|regex:/^\d+$/', // Solo números
             'description'   => 'nullable|string',
             'image_url'     => 'nullable|url',
-      /*       'current_stock' => 'required|integer|min:0', */
-/*             'reorder_point' => 'required|integer|min:0', */
             'unit_price'    => 'required|numeric|min:0',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.required'        => 'The product name is required.',
+            'category.required'    => 'The category is required.',
+            'barcode.regex'        => 'The barcode must contain only numbers.',
+            'barcode.unique'       => 'The barcode has already been taken.',
+            'unit_price.required'  => 'The unit price is required.',
+            'unit_price.numeric'   => 'The unit price must be a number.',
+            'unit_price.min'       => 'The unit price must be at least 0.',
         ];
     }
 }
