@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TenantController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\InventoryMovementController;
+use App\Http\Controllers\SaleController;
 use App\Models\User;
 
     Route::group([
@@ -57,5 +58,12 @@ use App\Models\User;
             'middleware' => 'auth:api',
         ], function () {
             Route::post('/movements', [InventoryMovementController::class, 'store'])->name('inventory.movements.store');
+        });
+
+        Route::group([
+            'prefix' => 'sales',
+            'middleware' => 'auth:api',
+        ], function () {
+            Route::post('/', [SaleController::class, 'store']);
         });
     });
