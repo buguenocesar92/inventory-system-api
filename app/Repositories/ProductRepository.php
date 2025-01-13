@@ -38,10 +38,16 @@ class ProductRepository
     }
 
 
-    public function find(Product $product): Product
+    public function find($product): Product
     {
-        return $product;
+        if ($product instanceof Product) {
+            return $product; // Ya es una instancia de Product
+        }
+
+        // Buscar el producto por su ID
+        return Product::findOrFail($product); // Lanza excepción si no se encuentra
     }
+
 
     public function create(array $data): Product
     {
@@ -58,4 +64,11 @@ class ProductRepository
     {
         $product->delete();
     }
+
+    public function updateStock(Product $product, float $quantity): void
+    {
+        $product->current_stock += $quantity;
+        $product->save();
+    }
+
 }
