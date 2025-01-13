@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Repositories\SaleRepository;
 use App\Repositories\ProductRepository;
+use Illuminate\Support\Facades\Auth;
 
 class SaleService
 {
@@ -37,9 +38,11 @@ class SaleService
         // Registrar la venta
         return $this->saleRepository->create([
             'product_id'  => $product->id,
+            'user_id'     => Auth::id(), // ID del usuario autenticado
             'quantity'    => $data['quantity'],
             'unit_price'  => $unitPrice,
             'total_price' => $totalPrice,
         ]);
     }
 }
+
