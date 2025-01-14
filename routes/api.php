@@ -50,6 +50,7 @@ use App\Models\User;
             Route::get('/{product}', [ProductController::class, 'show'])->name('products.show');
             Route::put('/{product}', [ProductController::class, 'update'])->name('products.update');
             Route::delete('/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+            Route::get('/barcode/{barcode}', [ProductController::class, 'showByBarcode']);
         });
 
         // Grupo de rutas para movimientos de inventario

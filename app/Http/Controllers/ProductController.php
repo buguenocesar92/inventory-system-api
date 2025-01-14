@@ -70,4 +70,13 @@ class ProductController extends Controller
         $this->productService->delete($product);
         return response()->json(['message' => 'Product deleted successfully.'], 200); // HTTP 200: OK
     }
+
+     /**
+     * Buscar un producto por código de barras.
+     */
+    public function showByBarcode(string $barcode): JsonResponse
+    {
+        $product = $this->productService->findByBarcode($barcode);
+        return response()->json($product);
+    }
 }

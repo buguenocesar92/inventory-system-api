@@ -38,4 +38,9 @@ class ProductService
     {
         $this->productRepository->delete($product);
     }
+
+    public function findByBarcode(string $barcode): Product
+    {
+        return $this->productRepository->findByBarcode($barcode);
+    }
 }

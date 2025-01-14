@@ -71,4 +71,8 @@ class ProductRepository
         $product->save();
     }
 
+    public function findByBarcode(string $barcode): Product
+    {
+        return Product::where('barcode', $barcode)->firstOrFail();
+    }
 }
