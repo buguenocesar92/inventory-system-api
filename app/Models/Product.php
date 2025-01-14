@@ -15,6 +15,12 @@ class Product extends Model
         'reorder_point', 'unit_price'
     ];
 
+    protected $casts = [
+        'unit_price' => 'float', // Forzar unit_price como float
+        'current_stock' => 'integer', // Opcional: convertir current_stock a integer
+    ];
+
+
     public function movements()
     {
         return $this->hasMany(InventoryMovement::class);
