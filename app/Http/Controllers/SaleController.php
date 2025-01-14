@@ -21,8 +21,12 @@ class SaleController extends Controller
     public function store(StoreSaleRequest $request): JsonResponse
     {
         $validatedData = $request->validated();
-        $sale = $this->saleService->create($validatedData);
+        $sales = $this->saleService->create($validatedData);
 
-        return response()->json($sale, 201); // HTTP 201: Created
+        return response()->json([
+            'message' => 'Sales registered successfully.',
+            'sales' => $sales,
+        ], 201); // HTTP 201: Created
     }
+
 }
