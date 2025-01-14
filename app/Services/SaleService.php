@@ -18,31 +18,38 @@ class SaleService
 
     public function create(array $data)
     {
-        // Obtener el producto desde la base de datos
-        $product = $this->productRepository->find($data['product_id']);
+        $sales = []; // Almacena todas las ventas realizadas
 
-        // Verificar que haya suficiente stock
-        if ($product->current_stock < $data['quantity']) {
-            throw new \Exception('Insufficient stock for this product.');
+        foreach ($data['items'] as $item) {
+            // Obtener el producto desde la base de datos
+            $product = $this->productRepository->find($item['product_id']);
+
+            // Verificar que haya suficiente stock
+            if ($product->current_stock < $item['quantity']) {
+                throw new \Exception("Insufficient stock for product ID: {$product->id}");
+            }
+
+            // Obtener el precio unitario desde la tabla de productos
+            $unitPrice = $product->unit_price;
+
+            // Calcular el precio total
+            $totalPrice = $unitPrice * $item['quantity'];
+
+            // Actualizar el stock del producto
+            $this->productRepository->updateStock($product, -$item['quantity']);
+
+            // Registrar la venta
+            $sales[] = $this->saleRepository->create([
+                'product_id'  => $product->id,
+                'user_id'     => Auth::id(), // ID del usuario autenticado
+                'quantity'    => $item['quantity'],
+                'unit_price'  => $unitPrice,
+                'total_price' => $totalPrice,
+            ]);
         }
 
-        // Obtener el precio unitario desde la tabla de productos
-        $unitPrice = $product->unit_price;
-
-        // Calcular el precio total
-        $totalPrice = $unitPrice * $data['quantity'];
-
-        // Actualizar el stock del producto
-        $this->productRepository->updateStock($product, -$data['quantity']);
-
-        // Registrar la venta
-        return $this->saleRepository->create([
-            'product_id'  => $product->id,
-            'user_id'     => Auth::id(), // ID del usuario autenticado
-            'quantity'    => $data['quantity'],
-            'unit_price'  => $unitPrice,
-            'total_price' => $totalPrice,
-        ]);
+        return $sales; // Retorna todas las ventas registradas
     }
+
 }
 
