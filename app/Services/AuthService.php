@@ -34,8 +34,10 @@ class AuthService
     {
         return response()->json([
             'access_token' => $token,
+            'refresh_token' => auth()->claims(['refresh' => true])->setTTL(config('jwt.refresh_ttl'))->tokenById(auth()->id()),
             'token_type' => 'bearer',
             'expires_in' => Auth::factory()->getTTL() * 60,
         ]);
     }
+
 }

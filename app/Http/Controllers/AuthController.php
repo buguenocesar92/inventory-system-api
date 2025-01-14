@@ -241,6 +241,14 @@ class AuthController extends Controller
      */
     public function refresh(): JsonResponse
     {
+        $token = auth()->getToken();
+        $claims = auth()->getPayload($token)->toArray();
+
+        if (!isset($claims['refresh']) || !$claims['refresh']) {
+            return response()->json(['error' => 'Invalid refresh token'], 401);
+        }
+
         return $this->authService->respondWithToken(auth()->refresh());
     }
+
 }
