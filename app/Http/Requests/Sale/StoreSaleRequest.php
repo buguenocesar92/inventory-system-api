@@ -14,19 +14,21 @@ class StoreSaleRequest extends ApiFormRequest
     public function rules(): array
     {
         return [
-            'product_id' => 'required|exists:products,id',
-            'quantity'   => 'required|numeric|min:1',
+            'items' => 'required|array|min:1', // items debe ser un array
+            'items.*.product_id' => 'required|integer|exists:products,id', // Cada item debe tener un product_id válido
+            'items.*.quantity' => 'required|integer|min:1', // Cada item debe tener una cantidad mínima de 1
         ];
     }
 
     public function messages(): array
     {
         return [
-            'product_id.required' => 'The product ID is required.',
-            'product_id.exists'   => 'The selected product does not exist.',
-            'quantity.required'   => 'The quantity is required.',
-            'quantity.numeric'    => 'The quantity must be a number.',
-            'quantity.min'        => 'The quantity must be at least 1.',
+            'items.required' => 'Debe incluir al menos un producto en la venta.',
+            'items.*.product_id.required' => 'El ID del producto es obligatorio.',
+            'items.*.product_id.exists' => 'El producto no existe.',
+            'items.*.quantity.required' => 'La cantidad es obligatoria.',
+            'items.*.quantity.min' => 'La cantidad debe ser al menos 1.',
         ];
     }
+
 }
