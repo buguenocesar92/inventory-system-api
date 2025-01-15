@@ -170,8 +170,22 @@ class AuthController extends Controller
      */
     public function me(): JsonResponse
     {
-        return response()->json(auth()->user());
+        $user = auth()->user();
+
+        // Obtener roles y permisos
+        $roles = $user->getRoleNames(); // Retorna una colección de nombres de roles
+        $permissions = $user->getAllPermissions()->pluck('name'); // Incluye permisos heredados
+
+
+        return response()->json([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'roles' => $roles, // Lista de roles
+            'permissions' => $permissions, // Lista de permisos
+        ]);
     }
+
 
     /**
      * Cerrar sesión.
