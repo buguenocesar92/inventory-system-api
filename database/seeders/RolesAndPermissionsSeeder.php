@@ -30,7 +30,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $roles = [
             'super-admin' => Permission::all(),
             'admin' => [
-                'products.index', 'products.store', 'products.show', 'products.update', 'products.destroy',
+                'products.index', 'products.store', 'products.show', 'products.update', 'products.destroy', 'products.showByBarcode',
                 'inventory.movements.store', 'sales.store',
             ],
             'cashier' => ['sales.store'],
