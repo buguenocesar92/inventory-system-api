@@ -10,44 +10,42 @@ class RolesAndPermissionsSeeder extends Seeder
 {
     public function run()
     {
-
         // Crear permisos relacionados con productos
-        Permission::create(['name' => 'products.index']);
-        Permission::create(['name' => 'products.store']);
-        Permission::create(['name' => 'products.show']);
-        Permission::create(['name' => 'products.update']);
-        Permission::create(['name' => 'products.destroy']);
-        Permission::create(['name' => 'products.showByBarcode']);
-
-        // Crear permisos relacionados con inventario
-        Permission::create(['name' => 'inventory.movements.store']);
-
-        // Crear permisos relacionados con ventas
-        Permission::create(['name' => 'sales.store']);
-
-        // Crear roles
-        $superAdmin = Role::create(['name' => 'super-admin']);
-       /*  $admin = Role::create(['name' => 'admin']); */
-        $cashier = Role::create(['name' => 'cashier']);
-        $inventorySupervisor = Role::create(['name' => 'inventory-supervisor']);
-
-        // Asignar permisos a roles
-        $superAdmin->givePermissionTo(Permission::all());
-
-/*         $admin->givePermissionTo([
-            'products.index', 'products.store', 'products.show', 'products.update', 'products.destroy',
+        $permissions = [
+            'products.index',
+            'products.store',
+            'products.show',
+            'products.update',
+            'products.destroy',
+            'products.showByBarcode',
             'inventory.movements.store',
             'sales.store',
-        ]); */
+        ];
 
-        $cashier->givePermissionTo([
-            'sales.store',
-        ]);
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate(['name' => $permission]);
+        }
 
-        $inventorySupervisor->givePermissionTo([
-            'products.index', 'products.show', 'products.update',
-            'inventory.movements.store',
-        ]);
+        // Crear roles si no existen
+        $roles = [
+            'super-admin' => Permission::all(),
+            'admin' => [
+                'products.index', 'products.store', 'products.show', 'products.update', 'products.destroy',
+                'inventory.movements.store', 'sales.store',
+            ],
+            'cashier' => ['sales.store'],
+            'inventory-supervisor' => [
+                'products.index', 'products.show', 'products.update', 'inventory.movements.store',
+            ],
+        ];
 
+        foreach ($roles as $roleName => $permissions) {
+            $role = Role::firstOrCreate(['name' => $roleName]);
+            if (is_array($permissions)) {
+                $role->givePermissionTo($permissions);
+            } else {
+                $role->syncPermissions($permissions);
+            }
+        }
     }
 }
