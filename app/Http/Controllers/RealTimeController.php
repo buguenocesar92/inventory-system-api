@@ -7,9 +7,12 @@ use App\Events\NombreDelEvento;
 
 class RealTimeController extends Controller
 {
-    public function sendMessage()
+    public function sendMessage(Request $request)
     {
-        event(new NombreDelEvento('Hola desde Laravel', 1));
+        $userId = $request->user()->id;
+        $message = $request->input('message', 'Hola desde Laravel');
+
+        event(new NombreDelEvento($message, $userId));
 
         return response()->json(['status' => 'Evento enviado']);
     }

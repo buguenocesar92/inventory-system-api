@@ -2,14 +2,13 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Queue\SerializesModels;
 
 class NombreDelEvento implements ShouldBroadcast
 {
-    use InteractsWithSockets, SerializesModels;
+    use SerializesModels;
 
     public string $message;
     public int $userId;
@@ -20,13 +19,22 @@ class NombreDelEvento implements ShouldBroadcast
         $this->userId = $userId;
     }
 
+    /**
+     * Define el canal de transmisión como privado.
+     */
     public function broadcastOn()
     {
-        return new Channel('nombre-del-canal');
+        return new PrivateChannel('user.' . $this->userId);
     }
 
-    public function broadcastAs()
+    /**
+     * Datos enviados al cliente.
+     */
+    public function broadcastWith()
     {
-        return 'NombreDelEvento';
+        return [
+            'message' => $this->message,
+            'userId' => $this->userId,
+        ];
     }
 }

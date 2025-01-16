@@ -8,7 +8,8 @@ use App\Http\Controllers\InventoryMovementController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\RealTimeController;
 
-Route::post('/send-message', [RealTimeController::class, 'sendMessage']);
+Route::post('send-message', [RealTimeController::class, 'sendMessage']);
+
 
 Route::group([
     'prefix' => 'tenants',
@@ -56,4 +57,5 @@ Route::middleware([\Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class])
     ], function () {
         Route::post('/', [SaleController::class, 'store'])->middleware('permission:sales.store');
     });
+
 });
