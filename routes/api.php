@@ -6,6 +6,9 @@ use App\Http\Controllers\TenantController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\InventoryMovementController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\RealTimeController;
+
+Route::post('/send-message', [RealTimeController::class, 'sendMessage']);
 
 Route::group([
     'prefix' => 'tenants',
