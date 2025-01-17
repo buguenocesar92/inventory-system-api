@@ -6,10 +6,8 @@ use App\Http\Controllers\TenantController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\InventoryMovementController;
 use App\Http\Controllers\SaleController;
-/* use App\Http\Controllers\RealTimeController;
- */
-/* Route::post('send-message', [RealTimeController::class, 'sendMessage']);
- */
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PermissionController;
 
 Route::group([
     'prefix' => 'tenants',
@@ -27,6 +25,24 @@ Route::middleware([\Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class])
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth:api');
         Route::post('/refresh', [AuthController::class, 'refresh'])->name('refresh')->middleware('auth:api');
         Route::post('/me', [AuthController::class, 'me'])->name('me')->middleware('auth:api');
+    });
+
+    Route::prefix('roles')->group(function () {
+        Route::get('/', [RoleController::class, 'index']);
+        Route::get('/{roleId}', [RoleController::class, 'show']);
+        Route::post('/', [RoleController::class, 'store']);
+        Route::put('/{roleId}', [RoleController::class, 'update']);
+        Route::delete('/{roleId}', [RoleController::class, 'destroy']);
+        Route::post('/assign', [RoleController::class, 'assignToUser']);
+    });
+
+    Route::prefix('permissions')->group(function () {
+        Route::get('/', [PermissionController::class, 'index']);
+        Route::get('/{permissionId}', [PermissionController::class, 'show']);
+        Route::post('/', [PermissionController::class, 'store']);
+        Route::put('/{permissionId}', [PermissionController::class, 'update']);
+        Route::delete('/{permissionId}', [PermissionController::class, 'destroy']);
+        Route::post('/assign', [PermissionController::class, 'assignToUser']);
     });
 
     // Grupo de rutas para productos
