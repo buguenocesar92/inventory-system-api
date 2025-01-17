@@ -10,7 +10,7 @@ class RolesAndPermissionsSeeder extends Seeder
 {
     public function run()
     {
-        // Crear permisos relacionados con productos
+        // Crear permisos relacionados con productos, roles y otros módulos
         $permissions = [
             'products.index',
             'products.store',
@@ -20,55 +20,33 @@ class RolesAndPermissionsSeeder extends Seeder
             'products.showByBarcode',
             'inventory.movements.store',
             'sales.store',
+            'roles.with-permissions',               // Permiso para obtener roles con permisos
+            'roles.with-permissions.show',          // Permiso para mostrar un rol con permisos
+            'roles.update-permissions',             // Permiso para actualizar permisos de roles
         ];
 
-        // Crear permisos relacionados con roles
-        $rolePermissions = [
-            'role.index',
-            'role.store',
-            'role.show',
-            'role.update',
-            'role.destroy',
-            'role.assign',
-        ];
-
-        // Crear permisos relacionados con permisos
-        $permissionPermissions = [
-            'permission.index',
-            'permission.store',
-            'permission.show',
-            'permission.update',
-            'permission.destroy',
-            'permission.assign',
-        ];
-
-        $allPermissions = array_merge($permissions, $rolePermissions, $permissionPermissions);
-
-        foreach ($allPermissions as $permission) {
+        foreach ($permissions as $permission) {
             Permission::firstOrCreate(['name' => $permission]);
         }
 
-        // Crear roles si no existen
+        // Crear roles y asignar permisos
         $roles = [
             'super-admin' => Permission::all(),
-            'admin' => array_merge(
-                $permissions,
-                $rolePermissions,
-                $permissionPermissions
-            ),
+            'admin' => [
+                'products.index', 'products.store', 'products.show', 'products.update', 'products.destroy',
+                'products.showByBarcode', 'inventory.movements.store', 'sales.store',
+                'roles.with-permissions', 'roles.with-permissions.show', 'roles.update-permissions',
+            ],
             'cashier' => ['sales.store'],
             'inventory-supervisor' => [
-                'products.index',
-                'products.show',
-                'products.update',
-                'inventory.movements.store',
+                'products.index', 'products.show', 'products.update', 'inventory.movements.store',
             ],
         ];
 
         foreach ($roles as $roleName => $permissions) {
             $role = Role::firstOrCreate(['name' => $roleName]);
             if (is_array($permissions)) {
-                $role->syncPermissions($permissions);
+                $role->givePermissionTo($permissions);
             } else {
                 $role->syncPermissions($permissions);
             }
