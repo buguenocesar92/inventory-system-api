@@ -22,27 +22,53 @@ class RolesAndPermissionsSeeder extends Seeder
             'sales.store',
         ];
 
-        foreach ($permissions as $permission) {
+        // Crear permisos relacionados con roles
+        $rolePermissions = [
+            'role.index',
+            'role.store',
+            'role.show',
+            'role.update',
+            'role.destroy',
+            'role.assign',
+        ];
+
+        // Crear permisos relacionados con permisos
+        $permissionPermissions = [
+            'permission.index',
+            'permission.store',
+            'permission.show',
+            'permission.update',
+            'permission.destroy',
+            'permission.assign',
+        ];
+
+        $allPermissions = array_merge($permissions, $rolePermissions, $permissionPermissions);
+
+        foreach ($allPermissions as $permission) {
             Permission::firstOrCreate(['name' => $permission]);
         }
 
         // Crear roles si no existen
         $roles = [
             'super-admin' => Permission::all(),
-            'admin' => [
-                'products.index', 'products.store', 'products.show', 'products.update', 'products.destroy', 'products.showByBarcode',
-                'inventory.movements.store', 'sales.store',
-            ],
+            'admin' => array_merge(
+                $permissions,
+                $rolePermissions,
+                $permissionPermissions
+            ),
             'cashier' => ['sales.store'],
             'inventory-supervisor' => [
-                'products.index', 'products.show', 'products.update', 'inventory.movements.store',
+                'products.index',
+                'products.show',
+                'products.update',
+                'inventory.movements.store',
             ],
         ];
 
         foreach ($roles as $roleName => $permissions) {
             $role = Role::firstOrCreate(['name' => $roleName]);
             if (is_array($permissions)) {
-                $role->givePermissionTo($permissions);
+                $role->syncPermissions($permissions);
             } else {
                 $role->syncPermissions($permissions);
             }
