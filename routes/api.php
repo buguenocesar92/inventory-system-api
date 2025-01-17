@@ -27,22 +27,30 @@ Route::middleware([\Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class])
         Route::post('/me', [AuthController::class, 'me'])->name('me')->middleware('auth:api');
     });
 
-    Route::prefix('roles')->group(function () {
-        Route::get('/', [RoleController::class, 'index']);
-        Route::get('/{roleId}', [RoleController::class, 'show']);
-        Route::post('/', [RoleController::class, 'store']);
-        Route::put('/{roleId}', [RoleController::class, 'update']);
-        Route::delete('/{roleId}', [RoleController::class, 'destroy']);
-        Route::post('/assign', [RoleController::class, 'assignToUser']);
+    // Grupo de rutas para roles
+    Route::group([
+        'prefix' => 'roles',
+        'middleware' => 'auth:api',
+    ], function () {
+        Route::get('/', [RoleController::class, 'index'])->name('role.index')->middleware('permission:role.index');
+        Route::get('/{roleId}', [RoleController::class, 'show'])->name('role.show')->middleware('permission:role.show');
+        Route::post('/', [RoleController::class, 'store'])->name('role.store')->middleware('permission:role.store');
+        Route::put('/{roleId}', [RoleController::class, 'update'])->name('role.update')->middleware('permission:role.update');
+        Route::delete('/{roleId}', [RoleController::class, 'destroy'])->name('role.destroy')->middleware('permission:role.destroy');
+        Route::post('/assign', [RoleController::class, 'assignToUser'])->name('role.assignToUser')->middleware('permission:role.assign');
     });
 
-    Route::prefix('permissions')->group(function () {
-        Route::get('/', [PermissionController::class, 'index']);
-        Route::get('/{permissionId}', [PermissionController::class, 'show']);
-        Route::post('/', [PermissionController::class, 'store']);
-        Route::put('/{permissionId}', [PermissionController::class, 'update']);
-        Route::delete('/{permissionId}', [PermissionController::class, 'destroy']);
-        Route::post('/assign', [PermissionController::class, 'assignToUser']);
+    // Grupo de rutas para permisos
+    Route::group([
+        'prefix' => 'permissions',
+        'middleware' => 'auth:api',
+    ], function () {
+        Route::get('/', [PermissionController::class, 'index'])->name('permission.index')->middleware('permission:permission.index');
+        Route::get('/{permissionId}', [PermissionController::class, 'show'])->name('permission.show')->middleware('permission:permission.show');
+        Route::post('/', [PermissionController::class, 'store'])->name('permission.store')->middleware('permission:permission.store');
+        Route::put('/{permissionId}', [PermissionController::class, 'update'])->name('permission.update')->middleware('permission:permission.update');
+        Route::delete('/{permissionId}', [PermissionController::class, 'destroy'])->name('permission.destroy') ->middleware('permission:permission.destroy');
+        Route::post('/assign', [PermissionController::class, 'assignToUser'])->name('permission.assignToUser')->middleware('permission:permission.assign');
     });
 
     // Grupo de rutas para productos
