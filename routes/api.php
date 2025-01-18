@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\InventoryMovementController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\PermissionController;
 
 Route::group([
     'prefix' => 'tenants',
@@ -36,6 +37,12 @@ Route::middleware([\Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class])
         Route::put('/with-permissions/{roleId}', [RolePermissionController::class, 'updateRolePermissions'])->name('roles.update-permissions')->middleware('permission:roles.update-permissions');
     });
 
+    Route::group([
+        'prefix' => 'permissions',
+        'middleware' => 'auth:api',
+    ], function () {
+        Route::get('/', [PermissionController::class, 'index'])->name('permission.index')->middleware('permission:permission.index');
+    });
 
     // Grupo de rutas para productos
     Route::group([

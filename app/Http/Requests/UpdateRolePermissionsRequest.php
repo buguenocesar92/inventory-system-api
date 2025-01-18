@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\ApiFormRequest;
 
-class UpdateRolePermissionsRequest extends FormRequest
+
+class UpdateRolePermissionsRequest extends ApiFormRequest
 {
     public function authorize(): bool
     {
