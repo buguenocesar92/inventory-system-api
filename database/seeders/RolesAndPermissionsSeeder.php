@@ -34,7 +34,7 @@ class RolesAndPermissionsSeeder extends Seeder
         // Crear roles y asignar permisos
         $roles = [
             'admin' => Permission::all(),
-            'cashier' => ['sales.store'],
+            'cashier' => ['sales.store', 'products.showByBarcode'],
             'inventory-supervisor' => [
                 'products.index', 'products.show', 'products.update', 'inventory.movements.store',
             ],
