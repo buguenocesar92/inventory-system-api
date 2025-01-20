@@ -23,6 +23,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'roles.with-permissions',               // Permiso para obtener roles con permisos
             'roles.with-permissions.show',          // Permiso para mostrar un rol con permisos
             'roles.update-permissions',             // Permiso para actualizar permisos de roles
+            'permission.index',                      // Permiso para obtener todos los permisos
         ];
 
         foreach ($permissions as $permission) {
