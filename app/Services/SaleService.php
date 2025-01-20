@@ -4,6 +4,8 @@ namespace App\Services;
 use App\Repositories\SaleRepository;
 use App\Repositories\ProductRepository;
 use Illuminate\Support\Facades\Auth;
+use App\Exceptions\InsufficientStockException;
+
 
 class SaleService
 {
@@ -26,7 +28,7 @@ class SaleService
 
             // Verificar que haya suficiente stock
             if ($product->current_stock < $item['quantity']) {
-                throw new \Exception("Insufficient stock for product ID: {$product->id}");
+                throw new InsufficientStockException();
             }
 
             // Obtener el precio unitario desde la tabla de productos
