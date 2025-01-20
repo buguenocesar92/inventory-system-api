@@ -42,4 +42,16 @@ class RoleService
     {
         $this->roleRepository->assignToUser($userId, $roleId);
     }
+
+    /**
+     * Actualizar los usuarios asignados a un rol.
+     *
+     * @param int $roleId
+     * @param array $userIds
+     * @return void
+     */
+    public function updateUsers(int $roleId, array $userIds): void
+    {
+        $this->roleRepository->updateUsers($roleId, $userIds);
+    }
 }

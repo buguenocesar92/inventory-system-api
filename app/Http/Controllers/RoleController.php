@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Role\StoreRoleRequest;
 use App\Http\Requests\Role\UpdateRoleRequest;
 use App\Http\Requests\Role\AssignRoleToUserRequest;
+use App\Http\Requests\Role\UpdateRoleUsersRequest;
 use App\Services\RoleService;
 use Illuminate\Http\JsonResponse;
 
@@ -72,6 +73,20 @@ class RoleController extends Controller
         $this->roleService->assignRoleToUser($validated['user_id'], $validated['role_id']);
 
         return response()->json(['message' => 'Role assigned to user successfully']);
+    }
+
+    /**
+     * Actualizar los usuarios asignados a un rol.
+     *
+     * @param UpdateRoleUsersRequest $request
+     * @param int $roleId
+     * @return JsonResponse
+     */
+    public function updateUsers(UpdateRoleUsersRequest $request, int $roleId): JsonResponse
+    {
+        $validated = $request->validated();
+        $this->roleService->updateUsers($roleId, $validated['users']); // Aquí usa 'users'
+        return response()->json(['message' => 'Users successfully assigned to the role.'], 200);
     }
 
 }

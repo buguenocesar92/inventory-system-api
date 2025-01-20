@@ -88,4 +88,10 @@ class RoleRepository
             ]),
         ];
     }
+
+    public function updateUsers(int $roleId, array $userIds): void
+    {
+        $role = Role::findOrFail($roleId);
+        $role->users()->sync($userIds); // Sincroniza los usuarios, eliminando los que no estén en la lista
+    }
 }

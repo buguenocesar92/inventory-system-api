@@ -9,6 +9,7 @@ use App\Http\Controllers\SaleController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\RoleController;
 
 Route::group([
     'prefix' => 'tenants',
@@ -36,6 +37,7 @@ Route::middleware([\Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class])
         Route::get('/with-permissions', [RolePermissionController::class, 'index'])->name('roles.with-permissions')->middleware('permission:roles.with-permissions');
         Route::get('/with-permissions/{roleId}', [RolePermissionController::class, 'show'])->name('role.show')->middleware('permission:roles.with-permissions.show');
         Route::put('/with-permissions/{roleId}', [RolePermissionController::class, 'updateRolePermissions'])->name('roles.update-permissions')->middleware('permission:roles.update-permissions');
+        Route::put('/{role}/users', [RoleController::class, 'updateUsers']);
     });
 
     Route::group([
