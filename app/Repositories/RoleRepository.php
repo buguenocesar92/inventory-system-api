@@ -50,7 +50,8 @@ class RoleRepository
 
     public function findWithPermissions(int $roleId): array
     {
-        $role = Role::with('permissions')->findOrFail($roleId);
+        $role = Role::with(['permissions', 'users'])->findOrFail($roleId);
+
         return [
             'id' => $role->id,
             'name' => $role->name,
@@ -60,8 +61,16 @@ class RoleRepository
                     'name' => $permission->name,
                 ];
             }),
+            'users' => $role->users->map(function ($user) {
+                return [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                ];
+            }),
         ];
     }
+
 
     /**
     * Actualizar los permisos de un rol.
