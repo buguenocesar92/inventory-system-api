@@ -41,7 +41,11 @@ class RoleRepository
 
     public function getAllWithPermissions(): \Illuminate\Database\Eloquent\Collection
     {
-        return Role::with('permissions')->get();
+        return Role::with([
+            'permissions:id,name',
+            'users:id,name,email'
+        ])->get();
+
     }
 
     public function findWithPermissions(int $roleId): array
