@@ -14,9 +14,10 @@ class UpdateRoleUsersRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'users' => ['required', 'array'],
+            'users' => ['nullable', 'array'], // Permite que el campo sea nulo o un array vacío
             'users.*' => ['integer', 'exists:users,id'], // Valida que los IDs existan en la tabla de usuarios
         ];
     }
+
 
 }
