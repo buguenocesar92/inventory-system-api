@@ -15,6 +15,6 @@ class InsufficientStockException extends Exception
 
     public function render(): \Illuminate\Http\JsonResponse
     {
-        return response()->json(['error' => $this->getMessage()], 409);
+        return response()->json(['message' => $this->getMessage()], 409);
     }
 }
