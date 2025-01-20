@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
+
 /**
  * Repositorio para manejar operaciones de usuarios.
  */
@@ -14,6 +15,7 @@ class UserRepository
     {
         $this->model = $model;
     }
+
     /**
      * Crear un usuario.
      *
@@ -25,4 +27,13 @@ class UserRepository
         return $this->model->create($data);
     }
 
+    /**
+     * Obtener todos los usuarios.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection Colección de usuarios.
+     */
+    public function getAll()
+    {
+        return $this->model->all();
+    }
 }
