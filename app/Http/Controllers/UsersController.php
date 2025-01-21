@@ -22,4 +22,13 @@ class UsersController extends Controller
         $users = $this->userService->getAllUsers();
         return response()->json($users);
     }
+
+        /**
+     * Obtener usuarios sin roles asignados.
+     */
+    public function getUsersWithoutRoles(): JsonResponse
+    {
+        $users = $this->userService->getUsersWithoutRoles();
+        return response()->json($users);
+    }
 }

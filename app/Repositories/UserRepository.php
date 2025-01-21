@@ -36,4 +36,10 @@ class UserRepository
     {
         return $this->model->all();
     }
+
+    public function getUsersWithoutRoles(): \Illuminate\Database\Eloquent\Collection
+    {
+        return User::doesntHave('roles')->get(); // Filtrar usuarios sin roles
+    }
+
 }

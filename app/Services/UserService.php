@@ -20,4 +20,10 @@ class UserService
     {
         return $this->userRepository->getAll();
     }
+
+    public function getUsersWithoutRoles()
+    {
+        return $this->userRepository->getUsersWithoutRoles();
+    }
+
 }
