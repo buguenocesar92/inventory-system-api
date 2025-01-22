@@ -20,6 +20,14 @@ class CashRegister extends Model
         'closed_at',
     ];
 
+    protected $casts = [
+        'opening_amount' => 'float',
+        'closing_amount' => 'float',
+        'difference' => 'float',
+        'opened_at' => 'datetime',
+        'closed_at' => 'datetime',
+    ];
+
     public function openedBy()
     {
         return $this->belongsTo(User::class, 'opened_by');
