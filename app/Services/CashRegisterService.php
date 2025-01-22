@@ -1,5 +1,4 @@
 <?php
-// app/Services/CashRegisterService.php
 namespace App\Services;
 
 use App\Repositories\CashRegisterRepository;
@@ -14,6 +13,9 @@ class CashRegisterService
         $this->cashRegisterRepo = $cashRegisterRepo;
     }
 
+    /**
+     * Abrir caja.
+     */
     public function open(float $openingAmount)
     {
         $userId = Auth::id();
@@ -30,7 +32,10 @@ class CashRegisterService
         ]);
     }
 
-    public function closeByUser(int $userId, float $closingAmount)
+    /**
+     * Cerrar caja.
+     */
+    public function closeByUser(int $userId, float $closingAmount): array
     {
         $cashRegister = $this->cashRegisterRepo->findOpenByUser($userId);
 
@@ -41,23 +46,34 @@ class CashRegisterService
         $expected = $cashRegister->opening_amount + $cashRegister->sales->sum('total_price');
         $difference = $closingAmount - $expected;
 
-        return $this->cashRegisterRepo->update($cashRegister, [
+        $updatedCashRegister = $this->cashRegisterRepo->update($cashRegister, [
             'closed_by' => $userId,
             'closing_amount' => $closingAmount,
             'difference' => $difference,
             'closed_at' => now(),
         ]);
+
+        // Validación: Sin ventas registradas
+        if ($cashRegister->sales->isEmpty()) {
+            return [
+                'message' => 'Caja cerrada con éxito, pero no se registraron ventas.',
+                'cash_register' => $updatedCashRegister,
+            ];
+        }
+
+        return [
+            'message' => 'Caja cerrada con éxito.',
+            'cash_register' => $updatedCashRegister,
+        ];
     }
 
-
     /**
-     * Consultar el estado de la caja.
+     * Consultar estado de la caja.
      */
     public function getStatus(): bool
     {
         $cashRegister = $this->cashRegisterRepo->findLastOpen();
 
-        // Una caja está abierta si no tiene un `closed_at`.
         return $cashRegister && !$cashRegister->closed_at;
     }
 }

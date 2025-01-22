@@ -27,7 +27,7 @@ class CashRegisterController extends Controller
             return response()->json([
                 'message' => 'Caja abierta con éxito.',
                 'cash_register' => $cashRegister,
-            ], 201); // HTTP 201: Created
+            ], 201);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 422);
         }
@@ -42,17 +42,13 @@ class CashRegisterController extends Controller
             $userId = Auth::id();
             $closingAmount = $request->validated()['closing_amount'];
 
-            $cashRegister = $this->cashRegisterService->closeByUser($userId, $closingAmount);
+            $result = $this->cashRegisterService->closeByUser($userId, $closingAmount);
 
-            return response()->json([
-                'message' => 'Caja cerrada con éxito.',
-                'cash_register' => $cashRegister,
-            ]);
+            return response()->json($result);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 422);
         }
     }
-
 
     /**
      * Consultar el estado actual de la caja.
