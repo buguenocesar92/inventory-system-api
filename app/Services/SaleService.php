@@ -38,6 +38,7 @@ class SaleService
 
         // Verificar si el usuario tiene una caja activa
         $openRegister = $this->cashRegisterRepo->findOpenByUser($userId);
+        /* dd($openRegister->id); */
         if (!$openRegister) {
             throw new \Exception('No hay una caja abierta para este usuario.');
         }

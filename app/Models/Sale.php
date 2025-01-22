@@ -15,6 +15,7 @@ class Sale extends Model
         'quantity',
         'unit_price',
         'total_price',
+        'cash_register_id', // Añade este campo
     ];
 
     // Relación con el usuario
