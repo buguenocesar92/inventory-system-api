@@ -43,4 +43,15 @@ class CashRegisterService
             'closed_at' => now(),
         ]);
     }
+
+    /**
+     * Consultar el estado de la caja.
+     */
+    public function getStatus(): bool
+    {
+        $cashRegister = $this->cashRegisterRepo->findLastOpen();
+
+        // Una caja está abierta si no tiene un `closed_at`.
+        return $cashRegister && !$cashRegister->closed_at;
+    }
 }
