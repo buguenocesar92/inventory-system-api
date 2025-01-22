@@ -27,7 +27,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'users.index',                          // Permiso para obtener todos los usuarios
             'update-roles-users',
             'cash-register.open',
-            'cash-register.close'
+            'cash-register.close',
+            'cash-register.status',
         ];
 
         foreach ($permissions as $permission) {
