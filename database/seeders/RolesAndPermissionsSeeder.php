@@ -25,6 +25,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'roles.update-permissions',             // Permiso para actualizar permisos de roles
             'permission.index',                      // Permiso para obtener todos los permisos
             'users.index',                          // Permiso para obtener todos los usuarios
+            'update-roles-users'
         ];
 
         foreach ($permissions as $permission) {

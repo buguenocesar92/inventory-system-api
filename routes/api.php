@@ -38,7 +38,7 @@ Route::middleware([\Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class])
         Route::get('/with-permissions', [RolePermissionController::class, 'index'])->name('roles.with-permissions')->middleware('permission:roles.with-permissions');
         Route::get('/with-permissions/{roleId}', [RolePermissionController::class, 'show'])->name('role.show')->middleware('permission:roles.with-permissions.show');
         Route::put('/with-permissions/{roleId}', [RolePermissionController::class, 'updateRolePermissions'])->name('roles.update-permissions')->middleware('permission:roles.update-permissions');
-        Route::put('/{role}/users', [RoleController::class, 'updateUsers']);
+        Route::put('/{role}/users', [RoleController::class, 'updateUsers'])->name('roles.update-roles-users')->middleware('permission:roles.update-roles-users');
     });
 
     Route::group([

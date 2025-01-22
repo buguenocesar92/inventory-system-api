@@ -1,3 +1,4 @@
+//crear un tenant con su flujos completo por tinker
 php artisan tinker
 $tenant1 = App\Models\Tenant::create(['id' => 'foo']);
 $tenant1->domains()->create(['domain' => 'foo.localhost']);
@@ -6,3 +7,10 @@ $tenant2->domains()->create(['domain' => 'bar.localhost']);
 App\Models\Tenant::all()->runForEach(function () {
     App\Models\User::factory()->create();
 });
+
+
+//crea los sedders de roles y permisos de todos los tenants
+php artisan seed:roles-permissions
+
+//ejecuta las migraciones de todos los tenants
+php artisan tenants:migrate
