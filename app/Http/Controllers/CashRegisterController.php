@@ -6,6 +6,7 @@ use App\Http\Requests\CashRegister\OpenCashRegisterRequest;
 use App\Http\Requests\CashRegister\CloseCashRegisterRequest;
 use App\Services\CashRegisterService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class CashRegisterController extends Controller
 {
@@ -35,10 +36,14 @@ class CashRegisterController extends Controller
     /**
      * Cerrar una caja.
      */
-    public function close(CloseCashRegisterRequest $request, int $id): JsonResponse
+    public function close(CloseCashRegisterRequest $request): JsonResponse
     {
         try {
-            $cashRegister = $this->cashRegisterService->close($id, $request->validated()['closing_amount']);
+            $userId = Auth::id();
+            $closingAmount = $request->validated()['closing_amount'];
+
+            $cashRegister = $this->cashRegisterService->closeByUser($userId, $closingAmount);
+
             return response()->json([
                 'message' => 'Caja cerrada con éxito.',
                 'cash_register' => $cashRegister,
@@ -47,6 +52,7 @@ class CashRegisterController extends Controller
             return response()->json(['error' => $e->getMessage()], 422);
         }
     }
+
 
     /**
      * Consultar el estado actual de la caja.

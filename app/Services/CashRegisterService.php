@@ -30,19 +30,25 @@ class CashRegisterService
         ]);
     }
 
-    public function close(int $cashRegisterId, float $closingAmount)
+    public function closeByUser(int $userId, float $closingAmount)
     {
-        $cashRegister = $this->cashRegisterRepo->findById($cashRegisterId);
+        $cashRegister = $this->cashRegisterRepo->findOpenByUser($userId);
+
+        if (!$cashRegister) {
+            throw new \Exception('No hay una caja abierta para este usuario.');
+        }
+
         $expected = $cashRegister->opening_amount + $cashRegister->sales->sum('total_price');
         $difference = $closingAmount - $expected;
 
         return $this->cashRegisterRepo->update($cashRegister, [
-            'closed_by' => Auth::id(),
+            'closed_by' => $userId,
             'closing_amount' => $closingAmount,
             'difference' => $difference,
             'closed_at' => now(),
         ]);
     }
+
 
     /**
      * Consultar el estado de la caja.
