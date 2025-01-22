@@ -3,9 +3,9 @@
 
 namespace App\Http\Requests\CashRegister;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\ApiFormRequest;
 
-class OpenCashRegisterRequest extends FormRequest
+class OpenCashRegisterRequest extends ApiFormRequest
 {
     public function authorize(): bool
     {
