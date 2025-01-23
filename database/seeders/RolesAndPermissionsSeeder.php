@@ -29,6 +29,11 @@ class RolesAndPermissionsSeeder extends Seeder
             'cash-register.open',
             'cash-register.close',
             'cash-register.status',
+            'categories.index',
+            'categories.store',
+            'categories.show',
+            'categories.update',
+            'categories.destroy',
         ];
 
         foreach ($permissions as $permission) {
