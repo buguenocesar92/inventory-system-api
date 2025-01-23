@@ -1,107 +1,16 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\TenantController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\InventoryMovementController;
-use App\Http\Controllers\SaleController;
-use App\Http\Controllers\RolePermissionController;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\UsersController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\CashRegisterController;
 
-Route::group([
-    'prefix' => 'tenants',
-], function () {
-    Route::post('/register', [TenantController::class, 'registerTenant'])->name('tenants.register');
-});
+require __DIR__ . '/api/tenants.php';
 
-// Grupo de rutas para autenticación
 Route::middleware([\Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class])->group(function () {
-    Route::group([
-        'prefix' => 'auth',
-    ], function () {
-        Route::post('/login', [AuthController::class, 'login'])->name('login');
-        Route::post('/register', [AuthController::class, 'register'])->name('register')->middleware('auth:api');
-        Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth:api');
-        Route::post('/refresh', [AuthController::class, 'refresh'])->name('refresh')->middleware('auth:api');
-        Route::post('/me', [AuthController::class, 'me'])->name('me')->middleware('auth:api');
-    });
-
-    // Grupo de rutas para roles
-    Route::group([
-        'prefix' => 'roles',
-        'middleware' => 'auth:api',
-    ], function () {
-        Route::get('/with-permissions', [RolePermissionController::class, 'index'])->name('roles.with-permissions')->middleware('permission:roles.with-permissions');
-        Route::get('/with-permissions/{roleId}', [RolePermissionController::class, 'show'])->name('role.show')->middleware('permission:roles.with-permissions.show');
-        Route::put('/with-permissions/{roleId}', [RolePermissionController::class, 'updateRolePermissions'])->name('roles.update-permissions')->middleware('permission:roles.update-permissions');
-        Route::put('/{role}/users', [RoleController::class, 'updateUsers'])->name('roles.update-roles-users')->middleware('permission:roles.update-roles-users');
-    });
-
-    Route::group([
-        'prefix' => 'permissions',
-        'middleware' => 'auth:api',
-    ], function () {
-        Route::get('/', [PermissionController::class, 'index'])->name('permission.index')->middleware('permission:permission.index');
-    });
-
-    Route::group([
-        'prefix' => 'users',
-        'middleware' => 'auth:api',
-    ], function () {
-        Route::get('/', [UsersController::class, 'index'])->name('users.index')->middleware('permission:users.index');
-        Route::get('/without-roles', [UsersController::class, 'getUsersWithoutRoles'])->name('users.without-roles');
-    });
-
-    // Grupo de rutas para productos
-    Route::group([
-        'prefix' => 'products',
-        'middleware' => 'auth:api',
-    ], function () {
-        Route::get('/', [ProductController::class, 'index'])->name('products.index')->middleware('permission:products.index');
-        Route::post('/', [ProductController::class, 'store'])->name('products.store')->middleware('permission:products.store');
-        Route::get('/{product}', [ProductController::class, 'show'])->name('products.show')->middleware('permission:products.show');
-        Route::put('/{product}', [ProductController::class, 'update'])->name('products.update')->middleware('permission:products.update');
-        Route::delete('/{product}', [ProductController::class, 'destroy'])->name('products.destroy')->middleware('permission:products.destroy');
-        Route::get('/barcode/{barcode}', [ProductController::class, 'showByBarcode'])->middleware('permission:products.showByBarcode');
-    });
-
-    // Grupo de rutas para movimientos de inventario
-    Route::group([
-        'prefix' => 'inventory',
-        'middleware' => 'auth:api',
-    ], function () {
-        Route::post('/movements', [InventoryMovementController::class, 'store'])->name('inventory.movements.store')->middleware('permission:inventory.movements.store');
-    });
-
-    // Grupo de rutas para ventas
-    Route::group([
-        'prefix' => 'sales',
-        'middleware' => 'auth:api',
-    ], function () {
-        Route::post('/', [SaleController::class, 'store'])->middleware('permission:sales.store');
-    });
-
-    // Grupo de rutas para caja (apertura, cierre y estado de caja)
-    Route::group([
-        'prefix' => 'cash-register',
-        'middleware' => 'auth:api',
-    ], function () {
-        Route::post('/open', [CashRegisterController::class, 'open'])
-            ->name('cash-register.open')
-            ->middleware('permission:cash-register.open');
-
-        Route::post('/close', [CashRegisterController::class, 'close'])
-            ->name('cash-register.close')
-            ->middleware('permission:cash-register.close');
-
-
-        Route::get('/status', [CashRegisterController::class, 'status'])
-            ->name('cash-register.status')
-            ->middleware('permission:cash-register.status');
-    });
-
+    require __DIR__ . '/api/auth.php';
+    require __DIR__ . '/api/roles.php';
+    require __DIR__ . '/api/permissions.php';
+    require __DIR__ . '/api/users.php';
+    require __DIR__ . '/api/products.php';
+    require __DIR__ . '/api/inventory.php';
+    require __DIR__ . '/api/sales.php';
+    require __DIR__ . '/api/cash_register.php';
+    require __DIR__ . '/api/categories.php';
 });
