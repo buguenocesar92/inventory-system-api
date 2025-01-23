@@ -1,0 +1,126 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "sassv2",
+    "collectionId": "0d457dfd-9841-4727-aa97-f61d753106b4",
+    "dateExported": "2025-01-23T19:29:31.233Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "6c915aed-c3df-4ffc-a784-2406078a526e",
+            "colId": "0d457dfd-9841-4727-aa97-f61d753106b4",
+            "containerId": "",
+            "name": "http://localhost:8000/api/categories",
+            "url": "http://localhost:8000/api/categories",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2025-01-23T19:08:02.921Z",
+            "modified": "2025-01-23T19:08:27.895Z",
+            "headers": [
+                {
+                    "name": "Host",
+                    "value": "foo.api.localhost"
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vZm9vLmFwaS5sb2NhbGhvc3QvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3Mzc2NTg4NzAsImV4cCI6MTczNzY2MjQ3MCwibmJmIjoxNzM3NjU4ODcwLCJqdGkiOiJOeWlvRFAwRXdVWjJiMHpsIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.sHv9KRRZ8ded-s5kfusQTrhMWIa8Gy-uamZcnhkoTlM"
+            }
+        },
+        {
+            "_id": "c6dba7fd-0e30-4132-9340-dfe171890e89",
+            "colId": "0d457dfd-9841-4727-aa97-f61d753106b4",
+            "containerId": "",
+            "name": "http://localhost:8000/api/categories/2",
+            "url": "http://localhost:8000/api/categories/2",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2025-01-23T19:10:18.091Z",
+            "modified": "2025-01-23T19:10:37.945Z",
+            "headers": [
+                {
+                    "name": "Host",
+                    "value": "foo.api.localhost"
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vZm9vLmFwaS5sb2NhbGhvc3QvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3Mzc2NTg4NzAsImV4cCI6MTczNzY2MjQ3MCwibmJmIjoxNzM3NjU4ODcwLCJqdGkiOiJOeWlvRFAwRXdVWjJiMHpsIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.sHv9KRRZ8ded-s5kfusQTrhMWIa8Gy-uamZcnhkoTlM"
+            }
+        },
+        {
+            "_id": "4809be22-5d3e-42fe-a6c2-e3d07c80bb92",
+            "colId": "0d457dfd-9841-4727-aa97-f61d753106b4",
+            "containerId": "",
+            "name": "http://localhost:8000/api/categories/2 Copy",
+            "url": "http://localhost:8000/api/categories/2",
+            "method": "GET",
+            "sortNum": 35000,
+            "created": "2025-01-23T19:11:11.235Z",
+            "modified": "2025-01-23T19:11:11.235Z",
+            "headers": [
+                {
+                    "name": "Host",
+                    "value": "foo.api.localhost"
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vZm9vLmFwaS5sb2NhbGhvc3QvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3Mzc2NTg4NzAsImV4cCI6MTczNzY2MjQ3MCwibmJmIjoxNzM3NjU4ODcwLCJqdGkiOiJOeWlvRFAwRXdVWjJiMHpsIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.sHv9KRRZ8ded-s5kfusQTrhMWIa8Gy-uamZcnhkoTlM"
+            }
+        },
+        {
+            "_id": "b0f79102-5602-47c1-ae86-1b6762fdafda",
+            "colId": "0d457dfd-9841-4727-aa97-f61d753106b4",
+            "containerId": "",
+            "name": "http://localhost:8000/api/categories",
+            "url": "http://localhost:8000/api/categories/1",
+            "method": "DELETE",
+            "sortNum": 40000,
+            "created": "2025-01-23T19:08:47.636Z",
+            "modified": "2025-01-23T19:17:57.534Z",
+            "headers": [
+                {
+                    "name": "Host",
+                    "value": "foo.api.localhost"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Bebidas y Snacks\",\n  \"description\": \"Categoría actualizada para bebidas y snacks.\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vZm9vLmFwaS5sb2NhbGhvc3QvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3Mzc2NTg4NzAsImV4cCI6MTczNzY2MjQ3MCwibmJmIjoxNzM3NjU4ODcwLCJqdGkiOiJOeWlvRFAwRXdVWjJiMHpsIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.sHv9KRRZ8ded-s5kfusQTrhMWIa8Gy-uamZcnhkoTlM"
+            }
+        },
+        {
+            "_id": "4a37966a-e0e4-46ad-8170-7196d37dd937",
+            "colId": "0d457dfd-9841-4727-aa97-f61d753106b4",
+            "containerId": "",
+            "name": "http://localhost:8000/api/categories Copy",
+            "url": "http://localhost:8000/api/categories/2",
+            "method": "PUT",
+            "sortNum": 50000,
+            "created": "2025-01-23T19:18:05.961Z",
+            "modified": "2025-01-23T19:18:16.333Z",
+            "headers": [
+                {
+                    "name": "Host",
+                    "value": "foo.api.localhost"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Bebidas y Snacks\",\n  \"description\": \"Categoría actualizada para bebidas y snacks.\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vZm9vLmFwaS5sb2NhbGhvc3QvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3Mzc2NTg4NzAsImV4cCI6MTczNzY2MjQ3MCwibmJmIjoxNzM3NjU4ODcwLCJqdGkiOiJOeWlvRFAwRXdVWjJiMHpsIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.sHv9KRRZ8ded-s5kfusQTrhMWIa8Gy-uamZcnhkoTlM"
+            }
+        }
+    ],
+    "ref": "-HROxaU74y69fiDDlPjAahCvgx75d8Ukj1nw6Ei8nX0aL4MAb9fqlN5OMeXJNsMvOzBrc9fZ_NeZAGHONT1ADg"
+}

@@ -2,7 +2,7 @@
     "clientName": "Thunder Client",
     "collectionName": "sass",
     "collectionId": "0af06f85-76c6-445b-9a29-d9a50a598bcf",
-    "dateExported": "2025-01-22T20:01:02.358Z",
+    "dateExported": "2025-01-23T19:06:51.674Z",
     "version": "1.2",
     "folders": [],
     "requests": [
@@ -73,12 +73,12 @@
             "_id": "139d4de4-cf54-4fed-a6f1-a3b488bc6b39",
             "colId": "0af06f85-76c6-445b-9a29-d9a50a598bcf",
             "containerId": "",
-            "name": "http://localhost:8000/api/roles/with-permissions Copy",
-            "url": "http://localhost:8000/api/users",
+            "name": "http://localhost:8000/api/categories",
+            "url": "http://localhost:8000/api/categories",
             "method": "GET",
             "sortNum": 20000,
             "created": "2025-01-20T22:17:43.027Z",
-            "modified": "2025-01-20T22:18:00.958Z",
+            "modified": "2025-01-23T19:01:18.009Z",
             "headers": [
                 {
                     "name": "Host",
@@ -87,7 +87,7 @@
             ],
             "auth": {
                 "type": "bearer",
-                "bearer": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vZm9vLmFwaS5sb2NhbGhvc3QvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MzcxNDA2MTEsImV4cCI6MTczNzE0NDIxMSwibmJmIjoxNzM3MTQwNjExLCJqdGkiOiJiRFRqek44ZmNHV3JiVXA3Iiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.TjdbKo0AHVg0HsyA0EYo3NVrFnCQfYnaH_h5OW09B2I"
+                "bearer": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vZm9vLmFwaS5sb2NhbGhvc3QvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3Mzc2NTg4NzAsImV4cCI6MTczNzY2MjQ3MCwibmJmIjoxNzM3NjU4ODcwLCJqdGkiOiJOeWlvRFAwRXdVWjJiMHpsIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.sHv9KRRZ8ded-s5kfusQTrhMWIa8Gy-uamZcnhkoTlM"
             }
         },
         {
@@ -179,7 +179,7 @@
             "_id": "8864deac-d936-4b00-adc1-51c4b1801a15",
             "colId": "0af06f85-76c6-445b-9a29-d9a50a598bcf",
             "containerId": "",
-            "name": "http://localhost:8000/api/roles/with-permissions/id Copy",
+            "name": "http://localhost:8000/api/roles/with-permissions/1",
             "url": "http://localhost:8000/api/roles/with-permissions/1",
             "method": "PUT",
             "sortNum": 30000,
@@ -199,6 +199,37 @@
             "auth": {
                 "type": "bearer",
                 "bearer": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vZm9vLmFwaS5sb2NhbGhvc3QvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MzcxNDA2MTEsImV4cCI6MTczNzE0NDIxMSwibmJmIjoxNzM3MTQwNjExLCJqdGkiOiJiRFRqek44ZmNHV3JiVXA3Iiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.TjdbKo0AHVg0HsyA0EYo3NVrFnCQfYnaH_h5OW09B2I"
+            }
+        },
+        {
+            "_id": "6e50fbfd-17f6-482f-97b0-4e76f8e3b54e",
+            "colId": "0af06f85-76c6-445b-9a29-d9a50a598bcf",
+            "containerId": "",
+            "name": "http://localhost:8000/api/categories",
+            "url": "http://localhost:8000/api/categories",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2025-01-23T19:01:40.948Z",
+            "modified": "2025-01-23T19:02:09.881Z",
+            "headers": [
+                {
+                    "name": "Host",
+                    "value": "foo.api.localhost"
+                }
+            ],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "name",
+                        "value": "test"
+                    }
+                ]
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vZm9vLmFwaS5sb2NhbGhvc3QvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3Mzc2NTg4NzAsImV4cCI6MTczNzY2MjQ3MCwibmJmIjoxNzM3NjU4ODcwLCJqdGkiOiJOeWlvRFAwRXdVWjJiMHpsIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.sHv9KRRZ8ded-s5kfusQTrhMWIa8Gy-uamZcnhkoTlM"
             }
         },
         {
@@ -383,7 +414,7 @@
             "_id": "6365b91b-6f0e-47be-9992-905a73f19128",
             "colId": "0af06f85-76c6-445b-9a29-d9a50a598bcf",
             "containerId": "",
-            "name": "http://localhost:8000/api/cash-register/open Copy",
+            "name": "http://localhost:8000/api/cash-register/open",
             "url": "http://localhost:8000/api/cash-register/open",
             "method": "POST",
             "sortNum": 52500,
@@ -416,5 +447,5 @@
             }
         }
     ],
-    "ref": "m8ZwfmRCTdjqmOBcSLCgECa_Pfdg4-dXFXEgKlcVERrxOn7gS4m1Hwgm77x9TE-SeXHV81_7pCaIUreZxcM7QQ"
+    "ref": "m8ZwfmRCTdjqmOBcSLCgEMNzhWxPpq6RccYjMBknGcDDgnlB1d3ZcvYxC-4PUhXazH65OfQM8feqcQLYK0e1RA"
 }
