@@ -6,16 +6,17 @@ use App\Models\Product;
 
 class ProductRepository
 {
-
     public function getAll(int $page, int $itemsPerPage, array $sortBy, string $search): array
     {
-        $query = Product::query();
+        $query = Product::with('category'); // Incluir la relación de categoría
 
         // Aplicar búsqueda
         if (!empty($search)) {
             $query->where('name', 'like', '%' . $search . '%')
-                  ->orWhere('category', 'like', '%' . $search . '%')
-                  ->orWhere('brand', 'like', '%' . $search . '%');
+                ->orWhereHas('category', function ($q) use ($search) { // Búsqueda en la categoría
+                    $q->where('name', 'like', '%' . $search . '%');
+                })
+                ->orWhere('brand', 'like', '%' . $search . '%');
         }
 
         // Aplicar ordenamiento
@@ -28,8 +29,8 @@ class ProductRepository
         // Paginación
         $total = $query->count();
         $items = $query->skip(($page - 1) * $itemsPerPage)
-                       ->take($itemsPerPage)
-                       ->get();
+            ->take($itemsPerPage)
+            ->get();
 
         return [
             'items' => $items,
@@ -37,17 +38,15 @@ class ProductRepository
         ];
     }
 
-
     public function find($product): Product
     {
         if ($product instanceof Product) {
-            return $product; // Ya es una instancia de Product
+            return $product->load('category'); // Cargar la relación de categoría
         }
 
         // Buscar el producto por su ID
-        return Product::findOrFail($product); // Lanza excepción si no se encuentra
+        return Product::with('category')->findOrFail($product); // Cargar relación
     }
-
 
     public function create(array $data): Product
     {
@@ -57,7 +56,7 @@ class ProductRepository
     public function update(Product $product, array $data): Product
     {
         $product->update($data);
-        return $product;
+        return $product->load('category'); // Actualizar y cargar relación
     }
 
     public function delete(Product $product): void
@@ -73,6 +72,6 @@ class ProductRepository
 
     public function findByBarcode(string $barcode): Product
     {
-        return Product::where('barcode', $barcode)->firstOrFail();
+        return Product::with('category')->where('barcode', $barcode)->firstOrFail(); // Cargar relación
     }
 }
