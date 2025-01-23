@@ -14,8 +14,9 @@ class UpdateCategoryRequest extends ApiFormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:categories,name,' . $this->route('id'),
+            'name' => 'required|string|max:255|unique:categories,name,' . $this->route('category'),
             'description' => 'nullable|string',
         ];
     }
+
 }
