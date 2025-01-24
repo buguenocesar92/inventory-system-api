@@ -16,6 +16,18 @@ class InventoryMovementController extends Controller
     }
 
     /**
+     * Listar todos los movimientos de inventario de un producto dado.
+     *
+     * @param int $productId
+     * @return JsonResponse
+     */
+    public function index(int $productId): JsonResponse
+    {
+        $movements = $this->inventoryMovementService->getMovementsByProduct($productId);
+        return response()->json($movements);
+    }
+
+    /**
      * Registrar un movimiento de inventario.
      *
      * @param InventoryMovementRequest $request

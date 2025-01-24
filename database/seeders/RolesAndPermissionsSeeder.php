@@ -34,6 +34,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'categories.show',
             'categories.update',
             'categories.destroy',
+            'inventory.movements.index',
         ];
 
         foreach ($permissions as $permission) {

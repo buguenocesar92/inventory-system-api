@@ -16,11 +16,25 @@ class InventoryMovementService
     }
 
     /**
+     * Obtener movimientos de inventario de un producto específico.
+     *
+     * @param int $productId
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getMovementsByProduct(int $productId)
+    {
+        // Aquí podrías validarlo si quieres asegurarte de que el producto exista, p.ej.:
+        // Product::findOrFail($productId);
+
+        return $this->inventoryMovementRepository->getByProduct($productId);
+    }
+
+    /**
      * Procesa el registro de un movimiento de inventario.
      *
      * @param array $data Datos validados del movimiento.
      * @return \App\Models\InventoryMovement
-     * @throws Exception
+     * @throws InsufficientStockException
      */
     public function storeMovement(array $data)
     {
@@ -32,7 +46,7 @@ class InventoryMovementService
             throw new InsufficientStockException();
         }
 
-        // Crear el movimiento usando el repositorio
+        // Crear el movimiento
         $movement = $this->inventoryMovementRepository->create($data);
 
         // Actualizar stock
@@ -41,7 +55,7 @@ class InventoryMovementService
         } elseif ($data['movement_type'] === 'exit') {
             $product->current_stock -= $data['quantity'];
         }
-        // Para "adjustment", define la lógica que necesites (por ej., setear el stock exacto, sumar o restar).
+        // Para "adjustment", define la lógica que necesites.
 
         // Guardar cambios en producto
         $product->save();
