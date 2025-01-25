@@ -34,7 +34,7 @@ services:
     depends_on:
       - app
     ports:
-      - "8000:80"
+      - "80:80"
     volumes:
       # Monta el código para que Nginx lo sirva; en dev, te sirve ver cambios en tiempo real
       - .:/var/www/html
