@@ -1,39 +1,33 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  # Contenedor de PHP-FPM con Laravel
   app:
     build: .
     container_name: laravel_app
     environment:
-      # Variables definidas en tu .env local o .env de docker-compose
-      APP_ENV: ${APP_ENV}
-      APP_KEY: ${APP_KEY}
+      APP_ENV: production
+      APP_KEY: base64:GENERATED_KEY
       DB_CONNECTION: pgsql
       DB_HOST: postgres
       DB_PORT: 5432
-      DB_DATABASE: ${DB_DATABASE}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
-
-    # IMPORTANTE:
-    # Si quieres que el código local sobrescriba el contenedor en desarrollo,
-    # descomenta la siguiente línea. Si no, déjalo comentado:
-    # volumes:
+      DB_DATABASE: laravel
+      DB_USERNAME: laravel_user
+      DB_PASSWORD: secret
+    ports:
+      - "9000:9000"
     #   - .:/var/www/html
-
     networks:
       - laravel_net
     depends_on:
       - postgres
-  # Contenedor PostgreSQL
+
   postgres:
     image: postgres:15
     container_name: laravel_postgres
     environment:
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: laravel_user
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: laravel
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -47,3 +41,4 @@ networks:
 
 volumes:
   postgres_data:
+
