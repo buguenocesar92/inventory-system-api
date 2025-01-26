@@ -1,10 +1,12 @@
-version: "3.8"
+version: '3.8'
 
 services:
+  # Contenedor de PHP-FPM con Laravel
   app:
     build: .
     container_name: laravel_app
     environment:
+      # Variables definidas en tu .env local o .env de docker-compose
       APP_ENV: ${APP_ENV}
       APP_KEY: ${APP_KEY}
       DB_CONNECTION: pgsql
@@ -13,15 +15,18 @@ services:
       DB_DATABASE: ${DB_DATABASE}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "9000:9000" # Expone PHP-FPM para que Nginx en el host pueda conectarse
-    volumes:
-      - .:/var/www/html
+
+    # IMPORTANTE:
+    # Si quieres que el código local sobrescriba el contenedor en desarrollo,
+    # descomenta la siguiente línea. Si no, déjalo comentado:
+    # volumes:
+    #   - .:/var/www/html
+
     networks:
       - laravel_net
     depends_on:
       - postgres
-
+  # Contenedor PostgreSQL
   postgres:
     image: postgres:15
     container_name: laravel_postgres
