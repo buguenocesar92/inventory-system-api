@@ -5,14 +5,14 @@ services:
     build: .
     container_name: laravel_app
     environment:
-      APP_ENV: production
-      APP_KEY: base64:GENERATED_KEY
+      APP_ENV: ${APP_ENV}
+      APP_KEY: ${APP_KEY}
       DB_CONNECTION: pgsql
       DB_HOST: postgres
       DB_PORT: 5432
-      DB_DATABASE: laravel
-      DB_USERNAME: laravel_user
-      DB_PASSWORD: secret
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
     ports:
       - "9000:9000"
     #   - .:/var/www/html
@@ -25,9 +25,9 @@ services:
     image: postgres:15
     container_name: laravel_postgres
     environment:
-      POSTGRES_USER: laravel_user
-      POSTGRES_PASSWORD: secret
-      POSTGRES_DB: laravel
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
