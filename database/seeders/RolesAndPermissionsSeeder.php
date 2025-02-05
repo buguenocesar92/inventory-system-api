@@ -36,6 +36,10 @@ class RolesAndPermissionsSeeder extends Seeder
             'categories.destroy',
             'inventory.movements.index',
             'roles.update-roles-users',
+            'reports.sales.view_all',
+            'reports.sales.view_daily',
+            'reports.sales.view_monthly',
+            'reports.sales.view_by_user',
         ];
 
         foreach ($permissions as $permission) {
