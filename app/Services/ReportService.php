@@ -13,23 +13,23 @@ class ReportService
         $this->reportRepository = $reportRepository;
     }
 
-    public function getSalesHistory(array $filters)
+    public function getSalesHistory(int $page, int $itemsPerPage, array $sortBy, string $search)
     {
-        return $this->reportRepository->getSales($filters);
+        return $this->reportRepository->getSales($page, $itemsPerPage, $sortBy, $search);
     }
 
-    public function getDailySalesReport(string $date)
+    public function getDailySalesReport(int $page, int $itemsPerPage, array $sortBy, string $search, string $date)
     {
-        return $this->reportRepository->getSales(['date' => $date]);
+        return $this->reportRepository->getSales($page, $itemsPerPage, $sortBy, $search, ['date' => $date]);
     }
 
-    public function getMonthlySalesReport(string $month)
+    public function getMonthlySalesReport($page, $itemsPerPage, $sortBy, $search, string $month)
     {
-        return $this->reportRepository->getSales(['month' => $month]);
+        return $this->reportRepository->getSales($page, $itemsPerPage, $sortBy, $search, ['month' => $month]);
     }
 
-    public function getSalesByUser(int $userId)
+    public function getSalesByUser($page, $itemsPerPage, $sortBy, $search, int $userId)
     {
-        return $this->reportRepository->getSales(['user_id' => $userId]);
+        return $this->reportRepository->getSales($page, $itemsPerPage, $sortBy, $search, ['user_id' => $userId]);
     }
 }
