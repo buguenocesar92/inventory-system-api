@@ -13,4 +13,5 @@ Route::middleware([\Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class])
     require __DIR__ . '/api/sales.php';
     require __DIR__ . '/api/cash_register.php';
     require __DIR__ . '/api/categories.php';
+    require __DIR__ . '/api/reports.php';
 });
