@@ -12,7 +12,7 @@ class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable, HasRoles ;
 
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['name', 'email', 'password', 'location_id'];
     protected $hidden = ['password', 'remember_token'];
 
     public function getJWTIdentifier()
@@ -23,5 +23,10 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
     }
 }
