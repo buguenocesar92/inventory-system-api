@@ -35,6 +35,7 @@ class SaleService
     {
         $sales = []; // Almacena todas las ventas realizadas
         $userId = Auth::id();
+        $locationId = Auth::user()->location_id;
 
         // Verificar si el usuario tiene una caja activa
         $openRegister = $this->cashRegisterRepo->findOpenByUser($userId);
@@ -68,6 +69,7 @@ class SaleService
                 'product_id'       => $product->id,
                 'user_id'          => $userId, // ID del usuario autenticado
                 'cash_register_id' => $openRegister->id, // Asociar a la caja activa
+                'location_id'      => $locationId,
                 'quantity'         => $item['quantity'],
                 'unit_price'       => $unitPrice,
                 'total_price'      => $totalPrice,

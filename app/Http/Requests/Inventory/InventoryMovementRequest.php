@@ -19,6 +19,7 @@ class InventoryMovementRequest extends ApiFormRequest
             'movement_type' => 'required|in:entry,exit,adjustment',
             'quantity' => 'required|integer|min:1',
             'description' => 'nullable|string',
+            'location_id' => 'required|exists:locations,id',
         ];
     }
 }

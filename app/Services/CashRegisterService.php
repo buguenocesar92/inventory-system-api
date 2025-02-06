@@ -19,6 +19,7 @@ class CashRegisterService
     public function open(float $openingAmount)
     {
         $userId = Auth::id();
+        $locationId = Auth::user()->location_id;
 
         $existingOpen = $this->cashRegisterRepo->findOpenByUser($userId);
         if ($existingOpen) {
@@ -29,6 +30,7 @@ class CashRegisterService
             'opened_by' => $userId,
             'opening_amount' => $openingAmount,
             'opened_at' => now(),
+            'location_id' => $locationId,
         ]);
     }
 

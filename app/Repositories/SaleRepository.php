@@ -12,6 +12,7 @@ class SaleRepository
             'product_id'       => $data['product_id'],
             'user_id'          => $data['user_id'],
             'cash_register_id' => $data['cash_register_id'], // Añade este campo
+            'location_id'      => $data['location_id'], // Añade este campo
             'quantity'         => $data['quantity'],
             'unit_price'       => $data['unit_price'],
             'total_price'      => $data['total_price'],
