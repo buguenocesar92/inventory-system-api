@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     public function up() {
-        Schema::table('sales', function (Blueprint $table) {
-            $table->foreignId('location_id')->constrained()->onDelete('cascade');
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('location_id')->nullable()->constrained()->onDelete('cascade');
         });
     }
 
     public function down() {
-        Schema::table('sales', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->dropForeign(['location_id']);
             $table->dropColumn('location_id');
         });
