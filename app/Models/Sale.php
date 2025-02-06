@@ -16,6 +16,7 @@ class Sale extends Model
         'unit_price',
         'total_price',
         'cash_register_id', // Añade este campo
+        'location_id',
     ];
 
     // Relación con el usuario
@@ -29,4 +30,10 @@ class Sale extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
+    }
+
 }
