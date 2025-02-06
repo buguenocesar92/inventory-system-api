@@ -18,6 +18,7 @@ class CashRegister extends Model
         'difference',
         'opened_at',
         'closed_at',
+        'location_id',
     ];
 
     protected $casts = [
@@ -42,4 +43,10 @@ class CashRegister extends Model
     {
         return $this->hasMany(Sale::class, 'cash_register_id');
     }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
+    }
+
 }
