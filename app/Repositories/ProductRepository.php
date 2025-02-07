@@ -74,4 +74,5 @@ class ProductRepository
     {
         return Product::with('category')->where('barcode', $barcode)->firstOrFail(); // Cargar relación
     }
+
 }
