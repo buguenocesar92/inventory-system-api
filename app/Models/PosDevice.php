@@ -25,4 +25,10 @@ class PosDevice extends Model
     {
         return $this->hasMany(CashRegister::class);
     }
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class);
+    }
+
 }
