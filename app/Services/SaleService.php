@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\SaleRepository;
 use App\Repositories\ProductStockRepository;
+use App\Repositories\PosDeviceRepository;
 use Illuminate\Support\Facades\Auth;
 use App\Exceptions\InsufficientStockException;
 
@@ -11,13 +12,16 @@ class SaleService
 {
     private SaleRepository $saleRepository;
     private ProductStockRepository $productStockRepo;
+    private PosDeviceRepository $posDeviceRepo;
 
     public function __construct(
         SaleRepository $saleRepository,
-        ProductStockRepository $productStockRepo
+        ProductStockRepository $productStockRepo,
+        PosDeviceRepository $posDeviceRepo
     ) {
         $this->saleRepository = $saleRepository;
         $this->productStockRepo = $productStockRepo;
+        $this->posDeviceRepo = $posDeviceRepo;
     }
 
     public function create(array $data): array
@@ -28,9 +32,14 @@ class SaleService
         $warehouseId = $data['warehouse_id'];
         $posDeviceId = $data['pos_device_id'];
 
-        // Validar que la bodega pertenece al local del usuario
+        // 🔹 Validar que la bodega pertenece al local del usuario
         if (!$this->productStockRepo->validateWarehouseLocation($warehouseId, $locationId)) {
             throw new \Exception('La bodega seleccionada no pertenece a tu local.');
+        }
+
+        // 🔹 Validar que el POS pertenece al local del usuario (Usando `existsInLocation()`)
+        if (!$this->posDeviceRepo->existsInLocation($posDeviceId, $locationId)) {
+            throw new \Exception('El POS seleccionado no pertenece a tu local.');
         }
 
         foreach ($data['items'] as $item) {
