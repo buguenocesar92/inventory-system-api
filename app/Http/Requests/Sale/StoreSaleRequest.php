@@ -18,7 +18,7 @@ class StoreSaleRequest extends ApiFormRequest
             'items.*.product_id' => 'required|integer|exists:products,id',
             'items.*.quantity' => 'required|integer|min:1',
             'warehouse_id' => 'required|integer|exists:warehouses,id', // Validar que la bodega existe
-            'pos_device_id' => 'required|integer|exists:pos_devices,id', // Validar que el POS existe
+            'pos_device_id'  => 'required|exists:pos_devices,id',
         ];
     }
 
