@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Repositories\CashRegisterRepository;
 use Illuminate\Support\Facades\Auth;
+use App\Models\CashRegister;
 
 class CashRegisterService
 {
@@ -16,23 +17,20 @@ class CashRegisterService
     /**
      * Abrir caja.
      */
-    public function open(float $openingAmount)
+    public function open(float $openingAmount, int $posDeviceId)
     {
         $userId = Auth::id();
-        $locationId = Auth::user()->location_id;
-
-        $existingOpen = $this->cashRegisterRepo->findOpenByUser($userId);
-        if ($existingOpen) {
-            throw new \Exception('Ya existe una caja abierta para este usuario.');
-        }
+        $locationId = Auth::user()->location_id; // Obtenemos el local asignado
 
         return $this->cashRegisterRepo->create([
             'opened_by' => $userId,
+            'location_id' => $locationId, // Asignamos la ubicación
+            'pos_device_id' => $posDeviceId, // POS seleccionado por el usuario
             'opening_amount' => $openingAmount,
             'opened_at' => now(),
-            'location_id' => $locationId,
         ]);
     }
+
 
     /**
      * Cerrar caja.
@@ -70,12 +68,11 @@ class CashRegisterService
     }
 
     /**
-     * Consultar estado de la caja.
+     * Obtener la caja abierta de un usuario.
      */
-    public function getStatus(): bool
+    public function getOpenCashRegisterByUser(int $userId): ?CashRegister
     {
-        $cashRegister = $this->cashRegisterRepo->findLastOpen();
-
-        return $cashRegister && !$cashRegister->closed_at;
+        return $this->cashRegisterRepo->findOpenByUser($userId);
     }
+
 }
