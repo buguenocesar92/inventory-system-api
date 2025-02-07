@@ -23,24 +23,29 @@ class Location extends Model
     /**
      * Relación: un local tiene muchos puntos de venta (POS).
      */
-/*     public function posDevices()
+    public function posDevices()
     {
         return $this->hasMany(POSDevice::class);
-    } */
+    }
 
     /**
      * Relación: un local tiene muchas cajas registradoras.
      */
-/*     public function cashRegisters()
+    public function cashRegisters()
     {
         return $this->hasMany(CashRegister::class);
-    } */
+    }
 
     /**
      * Relación: un local tiene muchas ventas.
      */
-/*     public function sales()
+    public function sales()
     {
         return $this->hasMany(Sale::class);
-    } */
+    }
+
+    public function warehouses()
+    {
+        return $this->hasMany(Warehouse::class);
+    }
 }
