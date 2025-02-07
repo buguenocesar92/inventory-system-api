@@ -40,4 +40,15 @@ class CashRegisterRepository
         $cashRegister->update($data);
         return $cashRegister;
     }
+
+    /**
+     * Buscar la caja activa de un usuario en un POS específico.
+     */
+    public function findOpenByUserAndPos(int $userId, int $posDeviceId): ?CashRegister
+    {
+        return CashRegister::where('opened_by', $userId)
+            ->where('pos_device_id', $posDeviceId)
+            ->whereNull('closed_at')
+            ->first();
+    }
 }
