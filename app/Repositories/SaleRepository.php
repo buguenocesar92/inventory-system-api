@@ -20,4 +20,20 @@ class SaleRepository
             'pos_device_id'    => $data['pos_device_id'],
         ]);
     }
+
+        /**
+     * Obtener total de ventas por caja registradora.
+     */
+    public function getTotalSalesByCashRegister(int $cashRegisterId): float
+    {
+        return Sale::where('cash_register_id', $cashRegisterId)->sum('total_price');
+    }
+
+    /**
+     * Contar la cantidad de ventas registradas en una caja.
+     */
+    public function countSalesByCashRegister(int $cashRegisterId): int
+    {
+        return Sale::where('cash_register_id', $cashRegisterId)->count();
+    }
 }

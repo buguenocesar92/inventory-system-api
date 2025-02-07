@@ -7,7 +7,7 @@ use App\Models\CashRegister;
 class CashRegisterRepository
 {
     /**
-     * Crear un nuevo registro de caja.
+     * Crear una nueva caja registradora.
      */
     public function create(array $data): CashRegister
     {
@@ -25,16 +25,6 @@ class CashRegisterRepository
     }
 
     /**
-     * Buscar la última caja abierta (independiente del usuario).
-     */
-    public function findLastOpen(): ?CashRegister
-    {
-        return CashRegister::whereNull('closed_at')
-            ->latest('opened_at')
-            ->first();
-    }
-
-    /**
      * Buscar caja por ID.
      */
     public function findById(int $id): CashRegister
@@ -43,7 +33,7 @@ class CashRegisterRepository
     }
 
     /**
-     * Actualizar un registro de caja.
+     * Actualizar caja.
      */
     public function update(CashRegister $cashRegister, array $data): CashRegister
     {
