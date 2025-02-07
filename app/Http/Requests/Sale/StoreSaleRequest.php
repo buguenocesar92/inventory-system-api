@@ -14,9 +14,11 @@ class StoreSaleRequest extends ApiFormRequest
     public function rules(): array
     {
         return [
-            'items' => 'required|array|min:1', // items debe ser un array
-            'items.*.product_id' => 'required|integer|exists:products,id', // Cada item debe tener un product_id válido
-            'items.*.quantity' => 'required|integer|min:1', // Cada item debe tener una cantidad mínima de 1
+            'items' => 'required|array|min:1',
+            'items.*.product_id' => 'required|integer|exists:products,id',
+            'items.*.quantity' => 'required|integer|min:1',
+            'warehouse_id' => 'required|integer|exists:warehouses,id', // Validar que la bodega existe
+            'pos_device_id' => 'required|integer|exists:pos_devices,id', // Validar que el POS existe
         ];
     }
 
@@ -28,7 +30,11 @@ class StoreSaleRequest extends ApiFormRequest
             'items.*.product_id.exists' => 'El producto no existe.',
             'items.*.quantity.required' => 'La cantidad es obligatoria.',
             'items.*.quantity.min' => 'La cantidad debe ser al menos 1.',
+            'warehouse_id.required' => 'La bodega es obligatoria.',
+            'warehouse_id.exists' => 'La bodega no existe.',
+            'pos_device_id.required' => 'El POS es obligatorio.',
+            'pos_device_id.exists' => 'El POS no existe.',
         ];
     }
-
 }
+
