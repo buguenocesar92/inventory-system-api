@@ -3,79 +3,66 @@
 namespace App\Services;
 
 use App\Repositories\SaleRepository;
-use App\Repositories\ProductRepository;
-use App\Repositories\CashRegisterRepository;
+use App\Repositories\ProductStockRepository;
 use Illuminate\Support\Facades\Auth;
 use App\Exceptions\InsufficientStockException;
 
 class SaleService
 {
     private SaleRepository $saleRepository;
-    private ProductRepository $productRepository;
-    private CashRegisterRepository $cashRegisterRepo;
+    private ProductStockRepository $productStockRepo;
 
     public function __construct(
         SaleRepository $saleRepository,
-        ProductRepository $productRepository,
-        CashRegisterRepository $cashRegisterRepo
+        ProductStockRepository $productStockRepo
     ) {
         $this->saleRepository = $saleRepository;
-        $this->productRepository = $productRepository;
-        $this->cashRegisterRepo = $cashRegisterRepo;
+        $this->productStockRepo = $productStockRepo;
     }
 
-    /**
-     * Crear ventas asociadas a la caja activa (turno abierto).
-     *
-     * @param array $data
-     * @return array
-     * @throws \Exception
-     */
     public function create(array $data): array
     {
-        $sales = []; // Almacena todas las ventas realizadas
-        $userId = Auth::id();
-        $locationId = Auth::user()->location_id;
+        $sales = [];
+        $user = Auth::user();
+        $locationId = $user->location_id;
+        $warehouseId = $data['warehouse_id'];
+        $posDeviceId = $data['pos_device_id'];
 
-        // Verificar si el usuario tiene una caja activa
-        $openRegister = $this->cashRegisterRepo->findOpenByUser($userId);
-        /* dd($openRegister->id); */
-        if (!$openRegister) {
-            throw new \Exception('No hay una caja abierta para este usuario.');
+        // Validar que la bodega pertenece al local del usuario
+        if (!$this->productStockRepo->validateWarehouseLocation($warehouseId, $locationId)) {
+            throw new \Exception('La bodega seleccionada no pertenece a tu local.');
         }
 
         foreach ($data['items'] as $item) {
-            // Obtener el producto desde la base de datos
-            $product = $this->productRepository->find($item['product_id']);
+            // Obtener stock del producto en la bodega
+            $stock = $this->productStockRepo->getStock($item['product_id'], $warehouseId);
 
-            // Verificar que haya suficiente stock
-            if ($product->current_stock < $item['quantity']) {
+            if (!$stock || $stock->quantity < $item['quantity']) {
                 throw new InsufficientStockException(
-                    "Insufficient stock for product '{$product->name}' (ID: {$product->id})."
+                    "Stock insuficiente para el producto ID {$item['product_id']} en la bodega {$warehouseId}."
                 );
             }
 
-            // Obtener el precio unitario desde la tabla de productos
-            $unitPrice = $product->unit_price;
-
-            // Calcular el precio total
-            $totalPrice = $unitPrice * $item['quantity'];
-
-            // Actualizar el stock del producto
-            $this->productRepository->updateStock($product, -$item['quantity']);
-
-            // Registrar la venta, asociándola al turno abierto
+            // Registrar venta
             $sales[] = $this->saleRepository->create([
-                'product_id'       => $product->id,
-                'user_id'          => $userId, // ID del usuario autenticado
-                'cash_register_id' => $openRegister->id, // Asociar a la caja activa
-                'location_id'      => $locationId,
-                'quantity'         => $item['quantity'],
-                'unit_price'       => $unitPrice,
-                'total_price'      => $totalPrice,
+                'product_id'  => $item['product_id'],
+                'user_id'     => $user->id,
+                'warehouse_id' => $warehouseId,
+                'quantity'    => $item['quantity'],
+                'unit_price'  => $item['unit_price'],
+                'total_price' => $item['unit_price'] * $item['quantity'],
+                'location_id' => $locationId,
+                'pos_device_id' => $posDeviceId,
             ]);
+
+            // Actualizar stock
+            $this->productStockRepo->updateStock(
+                $item['product_id'],
+                $warehouseId,
+                $stock->quantity - $item['quantity']
+            );
         }
 
-        return $sales; // Retorna todas las ventas registradas
+        return $sales;
     }
 }
