@@ -34,6 +34,7 @@ class CashRegisterController extends Controller
                 $request->validated()['pos_device_id']
             );
 
+
             return response()->json([
                 'message' => 'Caja abierta con éxito.',
                 'cash_register' => $cashRegister,
