@@ -10,7 +10,15 @@ class InventoryMovement extends Model
     use HasFactory;
 
     protected $fillable = [
-        'product_id', 'movement_type', 'quantity', 'description', 'location_id'
+        'product_id',
+        'user_id',
+        'origin_warehouse_id',
+        'destination_warehouse_id',
+        'origin_location_id',
+        'destination_location_id',
+        'quantity',
+        'movement_type',
+        'description',
     ];
 
     public function product()
@@ -18,9 +26,28 @@ class InventoryMovement extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function location()
+    public function user()
     {
-        return $this->belongsTo(Location::class);
+        return $this->belongsTo(User::class);
     }
 
+    public function originWarehouse()
+    {
+        return $this->belongsTo(Warehouse::class, 'origin_warehouse_id');
+    }
+
+    public function destinationWarehouse()
+    {
+        return $this->belongsTo(Warehouse::class, 'destination_warehouse_id');
+    }
+
+    public function originLocation()
+    {
+        return $this->belongsTo(Location::class, 'origin_location_id');
+    }
+
+    public function destinationLocation()
+    {
+        return $this->belongsTo(Location::class, 'destination_location_id');
+    }
 }
