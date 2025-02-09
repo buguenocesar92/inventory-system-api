@@ -35,7 +35,7 @@ class StoreInventoryMovementRequest extends ApiFormRequest
             'quantity.required' => 'La cantidad es obligatoria.',
             'quantity.min' => 'La cantidad debe ser al menos 1.',
             'movement_type.required' => 'El tipo de movimiento es obligatorio.',
-            'movement_type.in' => 'El tipo de movimiento debe ser entry, exit, transfer o adjustment.',
+            'movement_type.in' => 'El tipo de movimiento debe ser entry, exit, transfer.',
             'origin_warehouse_id.exists' => 'La bodega de origen no existe.',
             'destination_warehouse_id.exists' => 'La bodega de destino no existe.',
             'description.max' => 'La descripción no debe exceder los 255 caracteres.',
