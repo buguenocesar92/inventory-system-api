@@ -7,6 +7,9 @@ use App\Models\Warehouse;
 
 class ProductStockRepository
 {
+    /**
+     * Obtener el stock de un producto en una bodega específica.
+     */
     public function getStock(int $productId, int $warehouseId): ?ProductStock
     {
         return ProductStock::where('product_id', $productId)
@@ -14,17 +17,32 @@ class ProductStockRepository
             ->first();
     }
 
-    public function updateStock(int $productId, int $warehouseId, int $newQuantity): void
+    /**
+     * Incrementar el stock de un producto en una bodega.
+     */
+    public function incrementStock(int $productId, int $warehouseId, int $quantity): void
     {
-        ProductStock::where('product_id', $productId)
-            ->where('warehouse_id', $warehouseId)
-            ->update(['quantity' => $newQuantity]);
+        $stock = ProductStock::firstOrCreate([
+            'product_id' => $productId,
+            'warehouse_id' => $warehouseId,
+        ]);
+
+        $stock->quantity += $quantity;
+        $stock->save();
     }
 
-    public function validateWarehouseLocation(int $warehouseId, int $locationId): bool
+    /**
+     * Decrementar el stock de un producto en una bodega.
+     */
+    public function decrementStock(int $productId, int $warehouseId, int $quantity): void
     {
-        return Warehouse::where('id', $warehouseId)
-            ->where('location_id', $locationId)
-            ->exists();
+        $stock = $this->getStock($productId, $warehouseId);
+
+        if (!$stock || $stock->quantity < $quantity) {
+            throw new \Exception("No hay suficiente stock en la bodega ID {$warehouseId}.");
+        }
+
+        $stock->quantity -= $quantity;
+        $stock->save();
     }
 }
