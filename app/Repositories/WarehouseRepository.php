@@ -6,6 +6,14 @@ use App\Models\Warehouse;
 
 class WarehouseRepository
 {
+
+     /**
+     * Obtener una bodega específica por ID.
+     */
+    public function findById(int $id): ?Warehouse
+    {
+        return Warehouse::find($id);
+    }
     /**
      * Obtener todas las bodegas de un local específico.
      */
