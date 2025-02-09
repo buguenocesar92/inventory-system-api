@@ -40,6 +40,16 @@ class RolesAndPermissionsSeeder extends Seeder
             'reports.sales.view_daily',
             'reports.sales.view_monthly',
             'reports.sales.view_by_user',
+            'locations.index',
+            'locations.store',
+            'locations.show',
+            'locations.update',
+            'locations.destroy',
+            'warehouses.index',
+            'warehouses.store',
+            'warehouses.show',
+            'warehouses.update',
+            'warehouses.destroy',
         ];
 
         foreach ($permissions as $permission) {
