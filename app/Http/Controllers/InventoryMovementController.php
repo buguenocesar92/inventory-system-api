@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Inventory\InventoryMovementRequest;
+use App\Http\Requests\Inventory\StoreInventoryMovementRequest;
 use App\Services\InventoryMovementService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class InventoryMovementController extends Controller
 {
@@ -15,30 +16,18 @@ class InventoryMovementController extends Controller
         $this->inventoryMovementService = $inventoryMovementService;
     }
 
-    /**
-     * Listar todos los movimientos de inventario de un producto dado.
-     *
-     * @param int $productId
-     * @return JsonResponse
-     */
-    public function index(int $productId): JsonResponse
+    public function store(StoreInventoryMovementRequest $request): JsonResponse
     {
-        $movements = $this->inventoryMovementService->getMovementsByProduct($productId);
-        return response()->json($movements);
+        try {
+            $movement = $this->inventoryMovementService->storeMovement($request->validated());
+
+            return response()->json([
+                'message' => 'Movimiento registrado exitosamente.',
+                'movement' => $movement,
+                'user' => Auth::user(), // Retorna usuario que hizo el movimiento
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 422);
+        }
     }
-
-    /**
-     * Registrar un movimiento de inventario.
-     *
-     * @param InventoryMovementRequest $request
-     * @return JsonResponse
-     */
-    public function store(InventoryMovementRequest $request): JsonResponse
-    {
-        $data = $request->validated();
-        $movement = $this->inventoryMovementService->storeMovement($data);
-
-        return response()->json($movement, 201);
-    }
-
 }
