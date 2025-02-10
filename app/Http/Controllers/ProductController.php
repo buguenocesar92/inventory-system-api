@@ -27,11 +27,14 @@ class ProductController extends Controller
             $request->query('page', 1), // Página actual
             $request->query('itemsPerPage', 10), // Número de elementos por página
             $request->query('sortBy', []), // Ordenamiento
-            $request->query('search', '') // Búsqueda
+            $request->query('search', ''), // Búsqueda
+            $request->query('locationId', null), // Filtrar por local
+            $request->query('warehouseId', null) // Filtrar por bodega
         );
 
         return response()->json($products);
     }
+
 
     /**
      * Mostrar un producto específico.

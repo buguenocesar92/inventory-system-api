@@ -14,10 +14,17 @@ class ProductService
         $this->productRepository = $productRepository;
     }
 
-    public function getAll(int $page, int $itemsPerPage, array $sortBy, string $search)
-    {
-        return $this->productRepository->getAll($page, $itemsPerPage, $sortBy, $search);
+    public function getAll(
+        int $page,
+        int $itemsPerPage,
+        array $sortBy,
+        string $search,
+        ?int $locationId,
+        ?int $warehouseId
+    ) {
+        return $this->productRepository->getAll($page, $itemsPerPage, $sortBy, $search, $locationId, $warehouseId);
     }
+
 
     public function find(Product $product): Product
     {
