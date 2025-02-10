@@ -50,6 +50,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'warehouses.show',
             'warehouses.update',
             'warehouses.destroy',
+            'warehouses.view',
         ];
 
         foreach ($permissions as $permission) {
