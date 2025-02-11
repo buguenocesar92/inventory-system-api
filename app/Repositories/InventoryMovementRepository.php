@@ -6,6 +6,19 @@ use App\Models\InventoryMovement;
 
 class InventoryMovementRepository
 {
+    public function getByProduct(int $productId)
+    {
+        return InventoryMovement::with([
+            'product',                    // Datos del producto
+            'user',                        // Usuario que hizo el movimiento
+            'originWarehouse.location',    // Bodega de origen y su local
+            'destinationWarehouse.location' // Bodega de destino y su local
+        ])
+        ->where('product_id', $productId)
+        ->orderBy('created_at', 'desc')
+        ->get();
+    }
+
     public function create(array $data): InventoryMovement
     {
         return InventoryMovement::create($data);

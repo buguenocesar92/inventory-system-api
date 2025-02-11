@@ -25,6 +25,11 @@ class InventoryMovementService
         $this->warehouseRepo = $warehouseRepo;
     }
 
+    public function getMovementsByProduct(int $productId)
+    {
+        return $this->inventoryMovementRepo->getByProduct($productId);
+    }
+
     /**
      * Procesar movimiento de inventario.
      */

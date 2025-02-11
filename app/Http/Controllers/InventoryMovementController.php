@@ -16,6 +16,13 @@ class InventoryMovementController extends Controller
         $this->inventoryMovementService = $inventoryMovementService;
     }
 
+    public function index(int $productId): JsonResponse
+    {
+        $movements = $this->inventoryMovementService->getMovementsByProduct($productId);
+        return response()->json($movements);
+    }
+
+
     public function store(StoreInventoryMovementRequest $request): JsonResponse
     {
         try {
