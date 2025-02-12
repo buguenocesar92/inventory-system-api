@@ -56,5 +56,13 @@ class ProductStockRepository
             ->exists(); // Retorna true si existe, false si no
     }
 
+    public function getSalesWarehouse(int $locationId): ?int
+    {
+        return DB::table('warehouses')
+            ->where('location_id', $locationId)
+            ->where('is_sales_warehouse', true)
+            ->value('id'); // Retorna el ID de la bodega de ventas
+    }
+
 
 }
