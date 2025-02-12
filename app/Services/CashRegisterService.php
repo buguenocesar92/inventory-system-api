@@ -27,10 +27,10 @@ class CashRegisterService
     /**
      * Abrir una caja asegurando validaciones.
      */
-    public function open(int $userId, int $locationId, float $openingAmount, int $posDeviceId)
+    public function open(int $userId, int $locationId, float $openingAmount)
     {
         // Validar que el POS pertenece al local
-        if (!$this->posDeviceRepo->existsInLocation($posDeviceId, $locationId)) {
+        if (!$this->posDeviceRepo->existsInLocation($locationId)) {
             throw new \Exception('El POS seleccionado no pertenece a tu local.');
         }
 
@@ -43,7 +43,6 @@ class CashRegisterService
         return $this->cashRegisterRepo->create([
             'opened_by' => $userId,
             'location_id' => $locationId,
-            'pos_device_id' => $posDeviceId,
             'opening_amount' => $openingAmount,
             'opened_at' => now(),
         ]);

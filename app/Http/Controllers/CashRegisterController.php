@@ -31,7 +31,6 @@ class CashRegisterController extends Controller
                 $user->id,
                 $locationId,
                 $request->validated()['opening_amount'],
-                $request->validated()['pos_device_id']
             );
 
 

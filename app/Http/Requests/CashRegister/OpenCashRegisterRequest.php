@@ -16,7 +16,6 @@ class OpenCashRegisterRequest extends ApiFormRequest
     {
         return [
             'opening_amount' => 'required|numeric|min:0',
-            'pos_device_id'  => 'required|exists:pos_devices,id',
         ];
     }
 

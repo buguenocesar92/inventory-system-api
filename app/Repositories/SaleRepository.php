@@ -17,7 +17,6 @@ class SaleRepository
             'cash_register_id' => $data['cash_register_id'],
             'location_id'      => $data['location_id'],
             'warehouse_id'     => $data['warehouse_id'],
-            'pos_device_id'    => $data['pos_device_id'],
         ]);
     }
 

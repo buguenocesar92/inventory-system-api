@@ -19,7 +19,6 @@ class CashRegister extends Model
         'opened_at',
         'closed_at',
         'location_id',
-        'pos_device_id',
     ];
 
     protected $casts = [

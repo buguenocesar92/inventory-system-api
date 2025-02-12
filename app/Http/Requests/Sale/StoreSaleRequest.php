@@ -18,7 +18,6 @@ class StoreSaleRequest extends ApiFormRequest
             'items.*.product_id' => 'required|integer|exists:products,id',
             'items.*.quantity' => 'required|integer|min:1',
             'warehouse_id' => 'required|integer|exists:warehouses,id', // Validar que la bodega existe
-            'pos_device_id'  => 'required|exists:pos_devices,id',
         ];
     }
 
@@ -32,8 +31,6 @@ class StoreSaleRequest extends ApiFormRequest
             'items.*.quantity.min' => 'La cantidad debe ser al menos 1.',
             'warehouse_id.required' => 'La bodega es obligatoria.',
             'warehouse_id.exists' => 'La bodega no existe.',
-            'pos_device_id.required' => 'El POS es obligatorio.',
-            'pos_device_id.exists' => 'El POS no existe.',
         ];
     }
 }

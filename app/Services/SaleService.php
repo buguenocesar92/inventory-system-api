@@ -38,22 +38,20 @@ class SaleService
         $user = Auth::user();
         $locationId = $user->location_id;
         $warehouseId = $data['warehouse_id'];
-        $posDeviceId = $data['pos_device_id'];
-
         // 🔹 Obtener la caja activa del usuario en ese POS
-        $cashRegister = $this->cashRegisterRepo->findOpenByUserAndPos($user->id, $posDeviceId);
+        $cashRegister = $this->cashRegisterRepo->findOpenByUserAndPos($user->id);
 
         if (!$cashRegister) {
             throw new \Exception('No tienes una caja abierta en este POS.');
         }
 
         // 🔹 Validar que la bodega pertenece al local del usuario
-        if (!$this->productStockRepo->validateWarehouseLocation($warehouseId, $locationId)) {
+/*         if (!$this->productStockRepo->validateWarehouseLocation($warehouseId)) {
             throw new \Exception('La bodega seleccionada no pertenece a tu local.');
-        }
+        } */
 
         // 🔹 Validar que el POS pertenece al local del usuario
-        if (!$this->posDeviceRepo->existsInLocation($posDeviceId, $locationId)) {
+        if (!$this->posDeviceRepo->existsInLocation($locationId)) {
             throw new \Exception('El POS seleccionado no pertenece a tu local.');
         }
 
@@ -84,7 +82,6 @@ class SaleService
                 'unit_price'      => $unitPrice, // ✅ Se obtiene desde la base de datos
                 'total_price'     => $unitPrice * $item['quantity'],
                 'location_id'     => $locationId,
-                'pos_device_id'   => $posDeviceId,
                 'cash_register_id' => $cashRegister->id, // ✅ Se asigna la caja activa
             ]);
 
