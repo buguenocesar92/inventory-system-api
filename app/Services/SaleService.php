@@ -34,19 +34,20 @@ class SaleService
         $sales = [];
         $user = Auth::user();
         $locationId = $user->location_id;
-        $warehouseId = $data['warehouse_id'];
+
+        // 🔹 Obtener la bodega de ventas del local
+        $warehouseId = $this->productStockRepo->getSalesWarehouse($locationId);
+
+        if (!$warehouseId) {
+            throw new \Exception('No hay una bodega asignada para ventas en este local.');
+        }
+
         // 🔹 Obtener la caja activa del usuario en ese POS
         $cashRegister = $this->cashRegisterRepo->findOpenByUserAndPos($user->id);
 
         if (!$cashRegister) {
             throw new \Exception('No tienes una caja abierta en este POS.');
         }
-
-        // 🔹 Validar que la bodega pertenece al local del usuario
-        if (!$this->productStockRepo->validateWarehouseLocation($warehouseId, $locationId)) {
-            throw new \Exception('La bodega seleccionada no pertenece a tu local.');
-        }
-
 
         foreach ($data['items'] as $item) {
             // 🔹 Obtener producto y validar existencia
@@ -55,38 +56,31 @@ class SaleService
                 throw new \Exception("El producto ID {$item['product_id']} no existe.");
             }
 
-            // 🔹 Obtener el stock del producto en la bodega
+            // 🔹 Obtener el stock del producto en la bodega de ventas
             $stock = $this->productStockRepo->getStock($item['product_id'], $warehouseId);
             if (!$stock || $stock->quantity < $item['quantity']) {
                 throw new InsufficientStockException(
-                    "Stock insuficiente para el producto '{$product->name}' (ID: {$item['product_id']}) en la bodega {$warehouseId}."
+                    "Stock insuficiente para el producto '{$product->name}' (ID: {$item['product_id']}) en la bodega de ventas."
                 );
             }
 
-            // 🔹 Obtener el precio unitario desde la base de datos
-            $unitPrice = $product->unit_price;
-
             // 🔹 Registrar la venta en la base de datos
             $sales[] = $this->saleRepository->create([
-                'product_id'      => $item['product_id'],
-                'user_id'         => $user->id,
-                'warehouse_id'    => $warehouseId,
-                'quantity'        => $item['quantity'],
-                'unit_price'      => $unitPrice, // ✅ Se obtiene desde la base de datos
-                'total_price'     => $unitPrice * $item['quantity'],
-                'location_id'     => $locationId,
-                'cash_register_id' => $cashRegister->id, // ✅ Se asigna la caja activa
+                'product_id'       => $item['product_id'],
+                'user_id'          => $user->id,
+                'warehouse_id'     => $warehouseId,
+                'quantity'         => $item['quantity'],
+                'unit_price'       => $product->unit_price,
+                'total_price'      => $product->unit_price * $item['quantity'],
+                'location_id'      => $locationId,
+                'cash_register_id' => $cashRegister->id,
             ]);
 
-
-            // 🔹 Actualizar stock en la bodega
-            $this->productStockRepo->decrementStock(
-                $item['product_id'],
-                $warehouseId,
-                $item['quantity']
-            );
+            // 🔹 Descontar stock
+            $this->productStockRepo->decrementStock($item['product_id'], $warehouseId, $item['quantity']);
         }
 
         return $sales;
     }
+
 }
