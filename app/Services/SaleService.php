@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\SaleRepository;
-use App\Repositories\ProductStockRepository;
+use App\Repositories\ProductStockRepository; // Ensure this class exists in the specified namespace
 use App\Repositories\PosDeviceRepository;
 use App\Repositories\CashRegisterRepository;
 use App\Repositories\ProductRepository;
@@ -14,20 +14,17 @@ class SaleService
 {
     private SaleRepository $saleRepository;
     private ProductStockRepository $productStockRepo;
-    private PosDeviceRepository $posDeviceRepo;
     private CashRegisterRepository $cashRegisterRepo;
     private ProductRepository $productRepository;
 
     public function __construct(
         SaleRepository $saleRepository,
         ProductStockRepository $productStockRepo,
-        PosDeviceRepository $posDeviceRepo,
         CashRegisterRepository $cashRegisterRepo,
         ProductRepository $productRepository
     ) {
         $this->saleRepository = $saleRepository;
         $this->productStockRepo = $productStockRepo;
-        $this->posDeviceRepo = $posDeviceRepo;
         $this->cashRegisterRepo = $cashRegisterRepo;
         $this->productRepository = $productRepository;
     }
@@ -46,14 +43,10 @@ class SaleService
         }
 
         // 🔹 Validar que la bodega pertenece al local del usuario
-/*         if (!$this->productStockRepo->validateWarehouseLocation($warehouseId)) {
+        if (!$this->productStockRepo->validateWarehouseLocation($warehouseId, $locationId)) {
             throw new \Exception('La bodega seleccionada no pertenece a tu local.');
-        } */
-
-        // 🔹 Validar que el POS pertenece al local del usuario
-        if (!$this->posDeviceRepo->existsInLocation($locationId)) {
-            throw new \Exception('El POS seleccionado no pertenece a tu local.');
         }
+
 
         foreach ($data['items'] as $item) {
             // 🔹 Obtener producto y validar existencia
@@ -85,11 +78,12 @@ class SaleService
                 'cash_register_id' => $cashRegister->id, // ✅ Se asigna la caja activa
             ]);
 
+
             // 🔹 Actualizar stock en la bodega
-            $this->productStockRepo->updateStock(
+            $this->productStockRepo->decrementStock(
                 $item['product_id'],
                 $warehouseId,
-                $stock->quantity - $item['quantity']
+                $item['quantity']
             );
         }
 

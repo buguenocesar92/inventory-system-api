@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\ProductStock;
 use App\Models\Warehouse;
+use Illuminate\Support\Facades\DB;
 
 class ProductStockRepository
 {
@@ -45,4 +46,15 @@ class ProductStockRepository
         $stock->quantity -= $quantity;
         $stock->save();
     }
+
+
+    public function validateWarehouseLocation(int $warehouseId, int $userLocationId): bool
+    {
+        return DB::table('warehouses')
+            ->where('id', $warehouseId)
+            ->where('location_id', $userLocationId)
+            ->exists(); // Retorna true si existe, false si no
+    }
+
+
 }
