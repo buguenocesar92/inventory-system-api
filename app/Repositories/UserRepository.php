@@ -42,4 +42,9 @@ class UserRepository
         return User::doesntHave('roles')->get(); // Filtrar usuarios sin roles
     }
 
+    public function getAllWithLocations()
+    {
+        return $this->model->with('location')->get();
+    }
+
 }

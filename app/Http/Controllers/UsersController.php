@@ -31,4 +31,13 @@ class UsersController extends Controller
         $users = $this->userService->getUsersWithoutRoles();
         return response()->json($users);
     }
+
+    /**
+     * Obtener todos los usuarios con sus ubicaciones.
+     */
+    public function getAllWithLocations(): JsonResponse
+    {
+        $users = $this->userService->getAllWithLocations();
+        return response()->json($users);
+    }
 }

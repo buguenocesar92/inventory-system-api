@@ -51,6 +51,9 @@ class RolesAndPermissionsSeeder extends Seeder
             'warehouses.update',
             'warehouses.destroy',
             'warehouses.view',
+            'warehouses.with-locations',
+            'users.without-roles',
+            'users.with-locations',
         ];
 
         foreach ($permissions as $permission) {

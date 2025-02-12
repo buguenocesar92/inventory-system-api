@@ -26,4 +26,9 @@ class UserService
         return $this->userRepository->getUsersWithoutRoles();
     }
 
+    public function getAllWithLocations()
+    {
+        return $this->userRepository->getAllWithLocations();
+    }
+
 }
