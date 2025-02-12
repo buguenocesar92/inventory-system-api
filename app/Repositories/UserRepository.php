@@ -3,10 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 
-/**
- * Repositorio para manejar operaciones de usuarios.
- */
 class UserRepository
 {
     private User $model;
@@ -30,21 +28,53 @@ class UserRepository
     /**
      * Obtener todos los usuarios.
      *
-     * @return \Illuminate\Database\Eloquent\Collection Colección de usuarios.
+     * @return Collection Colección de usuarios.
      */
-    public function getAll()
+    public function getAll(): Collection
     {
         return $this->model->all();
     }
 
-    public function getUsersWithoutRoles(): \Illuminate\Database\Eloquent\Collection
+    /**
+     * Obtener usuarios sin roles asignados.
+     */
+    public function getUsersWithoutRoles(): Collection
     {
-        return User::doesntHave('roles')->get(); // Filtrar usuarios sin roles
+        return $this->model->doesntHave('roles')->get();
     }
 
-    public function getAllWithLocations()
+    /**
+     * Obtener todos los usuarios con sus ubicaciones.
+     */
+    public function getAllWithLocations(): Collection
     {
         return $this->model->with('location')->get();
     }
 
+    /**
+     * Encontrar un usuario por su ID.
+     */
+    public function find($id): ?User
+    {
+        return $this->model->find($id);
+    }
+
+    /**
+     * Actualizar un usuario.
+     */
+    public function update($id, array $data): User
+    {
+        $user = $this->model->findOrFail($id);
+        $user->update($data);
+        return $user;
+    }
+
+    /**
+     * Eliminar un usuario.
+     */
+    public function delete($id): bool
+    {
+        $user = $this->model->findOrFail($id);
+        return $user->delete();
+    }
 }

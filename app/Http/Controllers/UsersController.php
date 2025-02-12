@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
@@ -23,7 +24,7 @@ class UsersController extends Controller
         return response()->json($users);
     }
 
-        /**
+    /**
      * Obtener usuarios sin roles asignados.
      */
     public function getUsersWithoutRoles(): JsonResponse
@@ -39,5 +40,33 @@ class UsersController extends Controller
     {
         $users = $this->userService->getAllWithLocations();
         return response()->json($users);
+    }
+
+    /**
+     * Mostrar un usuario en específico.
+     */
+    public function show($id): JsonResponse
+    {
+        $user = $this->userService->getUserById($id);
+        return response()->json($user);
+    }
+
+    /**
+     * Actualizar un usuario.
+     */
+    public function update(Request $request, $id): JsonResponse
+    {
+        $data = $request->all();
+        $user = $this->userService->updateUser($id, $data);
+        return response()->json($user);
+    }
+
+    /**
+     * Eliminar un usuario.
+     */
+    public function destroy($id): JsonResponse
+    {
+        $this->userService->deleteUser($id);
+        return response()->json(['message' => 'Usuario eliminado correctamente']);
     }
 }
