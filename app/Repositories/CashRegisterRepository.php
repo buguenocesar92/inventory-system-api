@@ -50,4 +50,11 @@ class CashRegisterRepository
             ->whereNull('closed_at')
             ->first();
     }
+
+    public function findLastOpen(): ?CashRegister
+    {
+        return CashRegister::whereNull('closed_at')
+            ->latest('opened_at')
+            ->first();
+    }
 }

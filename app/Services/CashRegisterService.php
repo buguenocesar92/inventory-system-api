@@ -93,5 +93,12 @@ class CashRegisterService
     {
         return $this->cashRegisterRepo->findOpenByUser($userId);
     }
+
+    public function getStatus(): bool
+    {
+        $cashRegister = $this->cashRegisterRepo->findLastOpen();
+
+        return $cashRegister && !$cashRegister->closed_at;
+    }
 }
 
