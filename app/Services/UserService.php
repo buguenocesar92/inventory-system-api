@@ -54,4 +54,10 @@ class UserService
     {
         return $this->userRepository->delete($id);
     }
+
+    public function createUser(array $data)
+    {
+        // Aquí podrías agregar validaciones adicionales o lógica relacionada
+        return $this->userRepository->create($data);
+    }
 }

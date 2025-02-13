@@ -62,12 +62,23 @@ class UserRepository
     /**
      * Actualizar un usuario.
      */
+    /**
+     * Actualizar un usuario.
+     */
     public function update($id, array $data): User
     {
         $user = $this->model->findOrFail($id);
+
+        // Verificamos si location_id está en los datos recibidos
+        if (isset($data['location_id'])) {
+            $user->location_id = $data['location_id'];
+        }
+
         $user->update($data);
+
         return $user;
     }
+
 
     /**
      * Eliminar un usuario.

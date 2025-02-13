@@ -21,4 +21,8 @@ Route::group([
     Route::delete('/{id}', [UsersController::class, 'destroy'])
         ->name('users.destroy')
         ->middleware('permission:users.destroy');
+
+    Route::post('/', [UsersController::class, 'store'])
+        ->name('users.store')
+        ->middleware('permission:users.store');
 });

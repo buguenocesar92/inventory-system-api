@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
@@ -12,7 +13,7 @@ class UsersController extends Controller
 
     public function __construct(UserService $userService)
     {
-        $this->userService = $userService;
+         $this->userService = $userService;
     }
 
     /**
@@ -52,11 +53,23 @@ class UsersController extends Controller
     }
 
     /**
+     * Crear un nuevo usuario.
+     */
+    public function store(StoreUserRequest $request): JsonResponse
+    {
+        // Los datos ya han sido validados en el Form Request.
+        $data = $request->validated();
+        $user = $this->userService->createUser($data);
+        return response()->json($user, 201);
+    }
+
+    /**
      * Actualizar un usuario.
      */
-    public function update(Request $request, $id): JsonResponse
+    public function update(UpdateUserRequest $request, $id): JsonResponse
     {
-        $data = $request->all();
+        // Los datos ya han sido validados en el Form Request.
+        $data = $request->validated();
         $user = $this->userService->updateUser($id, $data);
         return response()->json($user);
     }
