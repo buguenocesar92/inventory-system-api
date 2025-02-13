@@ -61,4 +61,19 @@ class CashRegisterController extends Controller
             return response()->json(['error' => $e->getMessage()], 422);
         }
     }
+
+        /**
+     * Consultar el estado actual de la caja.
+     */
+    public function status(): JsonResponse
+    {
+        try {
+            $status = $this->cashRegisterService->getStatus();
+            return response()->json([
+                'is_open' => $status,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 422);
+        }
+    }
 }
