@@ -65,13 +65,14 @@ class WarehouseRepository
         return Warehouse::all();
     }
 
-    /**
-     * Obtener todos los almacenes y sus localizaciones.
-     */
-    public function getAllWarehousesWithLocations()
-    {
-        return Warehouse::with('location')->get();
-    }
+/**
+ * Obtener todos los almacenes y sus localizaciones, ordenados por ID ascendente.
+ */
+public function getAllWarehousesWithLocations()
+{
+    return Warehouse::with('location')->orderBy('id', 'asc')->get();
+}
+
 
 /**
  * Encuentra la warehouse de ventas en un local, si existe.
