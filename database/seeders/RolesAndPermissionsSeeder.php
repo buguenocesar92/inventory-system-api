@@ -58,6 +58,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'users.update',
             'users.destroy',
             'users.store',
+            'warehouses.setSalesStatus',
         ];
 
         foreach ($permissions as $permission) {

@@ -26,4 +26,9 @@ Route::group([
     Route::delete('/{warehouse}', [WarehouseController::class, 'destroy'])
         ->name('warehouses.destroy')
         ->middleware('permission:warehouses.destroy');
+
+    Route::put('/{id}/sales-status', [WarehouseController::class, 'setSalesStatus'])
+        ->name('warehouses.setSalesStatus')
+        ->middleware('permission:warehouses.setSalesStatus');
+
 });

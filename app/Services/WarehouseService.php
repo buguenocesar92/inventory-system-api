@@ -78,4 +78,26 @@ class WarehouseService
     {
         return $this->warehouseRepo->getAllWarehousesWithLocations();
     }
+
+        /**
+     * Establece el valor de is_sales_warehouse para una warehouse.
+     * Si se establece en true, se resetea el flag en las demás warehouses del mismo local.
+     *
+     * @param int $warehouseId
+     * @param bool $isSalesWarehouse
+     * @return \App\Models\Warehouse
+     * @throws ModelNotFoundException
+     */
+    public function setSalesWarehouse(int $warehouseId, bool $isSalesWarehouse)
+    {
+        $warehouse = $this->getWarehouseById($warehouseId);
+
+        if ($isSalesWarehouse) {
+            // Resetea el flag en todas las warehouses del mismo local (excepto la actual).
+            $this->warehouseRepo->resetSalesWarehouseForLocation($warehouse->location_id, $warehouseId);
+        }
+
+        // Actualiza la warehouse actual.
+        return $this->warehouseRepo->update($warehouse, ['is_sales_warehouse' => $isSalesWarehouse]);
+    }
 }

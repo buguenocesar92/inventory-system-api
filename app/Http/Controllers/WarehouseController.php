@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\WarehouseService;
 use Illuminate\Http\JsonResponse;
+use App\Http\Requests\Warehouse\SetSalesWarehouseRequest;
 use Illuminate\Http\Request;
 
 class WarehouseController extends Controller
@@ -106,5 +107,24 @@ class WarehouseController extends Controller
     {
         $warehouses = $this->warehouseService->getAllWarehousesWithLocations();
         return response()->json($warehouses);
+    }
+
+
+    /**
+     * Establece el flag is_sales_warehouse para una warehouse.
+     */
+    public function setSalesStatus(SetSalesWarehouseRequest $request, int $id): JsonResponse
+    {
+        try {
+            // Los datos ya fueron validados por SetSalesWarehouseRequest
+            $warehouse = $this->warehouseService->setSalesWarehouse($id, $request->validated()['is_sales_warehouse']);
+
+            return response()->json([
+                'message' => 'Estado de warehouse de ventas actualizado correctamente.',
+                'warehouse' => $warehouse
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 404);
+        }
     }
 }

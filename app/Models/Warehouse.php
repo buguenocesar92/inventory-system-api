@@ -9,7 +9,7 @@ class Warehouse extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['location_id', 'name', 'type'];
+    protected $fillable = ['location_id', 'name', 'type', 'is_sales_warehouse'];
 
     public function location()
     {

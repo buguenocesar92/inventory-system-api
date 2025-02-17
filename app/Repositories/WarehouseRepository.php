@@ -72,4 +72,26 @@ class WarehouseRepository
     {
         return Warehouse::with('location')->get();
     }
+
+/**
+ * Encuentra la warehouse de ventas en un local, si existe.
+ */
+public function findSalesWarehouseByLocation(int $locationId)
+{
+    return Warehouse::where('location_id', $locationId)
+        ->where('is_sales_warehouse', true)
+        ->first();
+}
+
+/**
+ * Resetea el flag is_sales_warehouse a false para todas las warehouses de un local,
+ * excepto la warehouse con ID $excludeWarehouseId.
+ */
+public function resetSalesWarehouseForLocation(int $locationId, int $excludeWarehouseId): void
+{
+    Warehouse::where('location_id', $locationId)
+        ->where('id', '!=', $excludeWarehouseId)
+        ->update(['is_sales_warehouse' => false]);
+}
+
 }
