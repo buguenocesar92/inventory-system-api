@@ -65,4 +65,11 @@ class WarehouseRepository
         return Warehouse::all();
     }
 
+    /**
+     * Obtener todos los almacenes y sus localizaciones.
+     */
+    public function getAllWarehousesWithLocations()
+    {
+        return Warehouse::with('location')->get();
+    }
 }

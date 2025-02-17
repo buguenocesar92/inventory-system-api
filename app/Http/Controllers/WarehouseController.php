@@ -28,14 +28,6 @@ class WarehouseController extends Controller
         }
     }
 
-    /**
-     * Obtener todos los almacenes.
-     */
-    public function index(): JsonResponse
-    {
-        $warehouses = $this->warehouseService->getAllWarehouses();
-        return response()->json($warehouses);
-    }
 
     /**
      * Obtener un almacén específico.
@@ -98,4 +90,21 @@ class WarehouseController extends Controller
         }
     }
 
+    /**
+     * Obtener todos los almacenes.
+     */
+    public function index(): JsonResponse
+    {
+        $warehouses = $this->warehouseService->getAllWarehouses();
+        return response()->json($warehouses);
+    }
+
+    /**
+     * Obtener todos los almacenes con sus respectivas ubicaciones.
+     */
+    public function getAllWarehousesWithLocations(): JsonResponse
+    {
+        $warehouses = $this->warehouseService->getAllWarehousesWithLocations();
+        return response()->json($warehouses);
+    }
 }

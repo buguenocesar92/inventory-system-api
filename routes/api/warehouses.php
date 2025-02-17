@@ -7,7 +7,7 @@ Route::group([
     'prefix' => 'warehouses',
     'middleware' => 'auth:api',
 ], function () {
-    Route::get('/', [WarehouseController::class, 'index'])
+    Route::get('/', [WarehouseController::class, 'getAllWarehousesWithLocations'])
         ->name('warehouses.index')
         ->middleware('permission:warehouses.index');
 

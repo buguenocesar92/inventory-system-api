@@ -22,14 +22,6 @@ class WarehouseService
         return $this->warehouseRepo->getWarehousesByLocation($locationId);
     }
 
-        /**
-     * Obtener todos los almacenes.
-     */
-    public function getAllWarehouses()
-    {
-        return $this->warehouseRepo->getAll();
-    }
-
     /**
      * Obtener un almacén por ID.
      */
@@ -68,5 +60,22 @@ class WarehouseService
     {
         $warehouse = $this->getWarehouseById($id);
         $this->warehouseRepo->delete($warehouse);
+    }
+
+    /**
+     * Obtener todos los almacenes.
+     */
+    public function getAllWarehouses()
+    {
+        return $this->warehouseRepo->getAll();
+    }
+
+
+    /**
+     * Obtener todos los almacenes con sus respectivas ubicaciones.
+     */
+    public function getAllWarehousesWithLocations()
+    {
+        return $this->warehouseRepo->getAllWarehousesWithLocations();
     }
 }
