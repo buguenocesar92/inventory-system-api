@@ -69,15 +69,24 @@ class UserRepository
     {
         $user = $this->model->findOrFail($id);
 
-        // Verificamos si location_id está en los datos recibidos
+        // Si location_id está en los datos, lo asignamos
         if (isset($data['location_id'])) {
             $user->location_id = $data['location_id'];
+        }
+
+        // Si se proporciona una nueva contraseña, la encriptamos
+        if (!empty($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        } else {
+            // Si no se proporciona, la eliminamos para evitar sobreescritura
+            unset($data['password']);
         }
 
         $user->update($data);
 
         return $user;
     }
+
 
 
     /**
