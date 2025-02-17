@@ -56,4 +56,13 @@ class WarehouseRepository
     {
         $warehouse->delete();
     }
+
+       /**
+     * Obtener todos los almacenes.
+     */
+    public function getAll()
+    {
+        return Warehouse::all();
+    }
+
 }
