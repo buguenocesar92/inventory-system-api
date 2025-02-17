@@ -7,10 +7,20 @@ use App\Models\User;
 
 class PermissionRepository
 {
+
     public function getAll()
     {
-        return Permission::all();
+        $permissionNames = config('permissions'); // Cargamos el diccionario de nombres legibles
+
+        return Permission::all()->map(function ($permission) use ($permissionNames) {
+            return [
+                'id' => $permission->id,
+                'name' => $permission->name,
+                'readable_name' => $permissionNames[$permission->name] ?? $permission->name, // Si no está en el diccionario, usa el nombre original
+            ];
+        });
     }
+
 
     public function find(int $permissionId)
     {

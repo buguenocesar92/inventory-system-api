@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use Spatie\Permission\Models\Role;
+use Illuminate\Database\Eloquent\Collection;
 
 class RoleRepository
 {
@@ -39,26 +40,48 @@ class RoleRepository
         $role->users()->attach($userId); // O usar sync() si es necesario
     }
 
-    public function getAllWithPermissions(): \Illuminate\Database\Eloquent\Collection
-    {
-        return Role::with([
-            'permissions:id,name',
-            'users:id,name,email'
-        ])->get();
 
+    public function getAllWithPermissions(): Collection
+    {
+        $permissionNames = config('permissions');
+
+        $roles = Role::with(['permissions:id,name', 'users:id,name,email'])->get()->map(function ($role) use ($permissionNames) {
+            return [
+                'id' => $role->id,
+                'name' => $role->name,
+                'permissions' => $role->permissions->map(function ($permission) use ($permissionNames) {
+                    return [
+                        'id' => $permission->id,
+                        'name' => $permission->name,
+                        'readable_name' => $permissionNames[$permission->name] ?? $permission->name,
+                    ];
+                }),
+                'users' => $role->users->map(fn ($user) => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                ]),
+            ];
+        });
+
+        return new Collection($roles); // Convierte la Support\Collection en Eloquent\Collection
     }
+
+
 
     public function findWithPermissions(int $roleId): array
     {
         $role = Role::with(['permissions', 'users'])->findOrFail($roleId);
+        $permissionNames = config('permissions'); // Cargamos el diccionario de permisos
 
         return [
             'id' => $role->id,
             'name' => $role->name,
-            'permissions' => $role->permissions->map(function ($permission) {
+            'permissions' => $role->permissions->map(function ($permission) use ($permissionNames) {
                 return [
                     'id' => $permission->id,
                     'name' => $permission->name,
+                    'readable_name' => $permissionNames[$permission->name] ?? $permission->name, // Nombre legible
                 ];
             }),
             'users' => $role->users->map(function ($user) {
