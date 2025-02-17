@@ -22,8 +22,14 @@ class UserRepository
      */
     public function create(array $data): User
     {
+        // Verificar si se proporciona una contraseña y encriptarla
+        if (!empty($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        }
+
         return $this->model->create($data);
     }
+
 
     /**
      * Obtener todos los usuarios.
