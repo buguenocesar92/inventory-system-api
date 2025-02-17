@@ -30,9 +30,9 @@ class CashRegisterService
     public function open(int $userId, int $locationId, float $openingAmount)
     {
         // Validar que el POS pertenece al local
-        if (!$this->posDeviceRepo->existsInLocation($locationId)) {
+/*         if (!$this->posDeviceRepo->existsInLocation($locationId)) {
             throw new \Exception('El POS seleccionado no pertenece a tu local.');
-        }
+        } */
 
         // Validar si el usuario ya tiene una caja abierta
         if ($this->getOpenCashRegisterByUser($userId)) {
